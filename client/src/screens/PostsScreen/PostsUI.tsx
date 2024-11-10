@@ -9,12 +9,12 @@ const PostsUI = (props: PostsUIProps) => {
   const { postsData } = props;
   console.log({ postsData });
   return (
-    <div>
+    <ul>
       {postsData.map((post) => {
         const { _id } = post;
         return <ListItem key={_id} postData={post} />;
       })}
-    </div>
+    </ul>
   );
 };
 

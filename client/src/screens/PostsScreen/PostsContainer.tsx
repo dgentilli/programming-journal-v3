@@ -8,27 +8,37 @@ const mockContent =
 
 const PostsContainer = () => {
   const mockData = [
-    { title: 'MongoDB', content: mockContent, createdAt: Date.now(), _id: '1' },
+    {
+      title: 'MongoDB',
+      content: mockContent,
+      createdAt: '2024-11-10',
+      _id: '1',
+    },
     {
       title: 'ExpressJS',
       content: mockContent,
-      createdAt: Date.now(),
+      createdAt: '2024-11-09',
       _id: '2',
     },
-    { title: 'Redux', content: mockContent, createdAt: Date.now(), _id: '3' },
+    { title: 'Redux', content: mockContent, createdAt: '2024-11-09', _id: '3' },
     {
       title: 'React Components',
       content: mockContent,
-      createdAt: Date.now(),
+      createdAt: '2024-11-08',
       _id: '4',
     },
     {
       title: 'State and Props',
       content: mockContent,
-      createdAt: Date.now(),
+      createdAt: '2024-11-07',
       _id: '5',
     },
-    { title: 'JS 101', content: mockContent, createdAt: Date.now(), _id: '6' },
+    {
+      title: 'JS 101',
+      content: mockContent,
+      createdAt: '2024-11-05',
+      _id: '6',
+    },
   ];
 
   return <MemoizedPostsUI postsData={mockData} />;
