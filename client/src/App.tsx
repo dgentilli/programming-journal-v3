@@ -1,13 +1,9 @@
+import { RouterProvider } from 'react-router-dom';
 import './App.css';
-import PostsContainer from './screens/PostsScreen/PostsContainer';
+import { router } from './main-router';
 
 function App() {
-  return (
-    <>
-      <h1>Programming Journal 3.0</h1>
-      <PostsContainer />
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
