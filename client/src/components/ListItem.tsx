@@ -7,23 +7,23 @@ const Wrapper = styled.li`
   max-width: 900px;
   margin-bottom: ${baseTokens.spacing.md};
   border-radius: ${baseTokens.radius.md};
-  border: 1px solid ${baseTokens.colors.gray200};
+  border: 1px solid ${baseTokens.colors.gray100};
 `;
 
 const Title = styled.h3`
-  color: ${baseTokens.colors.gray700};
+  color: ${baseTokens.colors.gray400};
   text-align: center;
 `;
 
 const Text = styled.p`
-  color: ${baseTokens.colors.gray500};
+  color: ${baseTokens.colors.gray300};
   line-height: 1.7;
   text-align: left;
 `;
 
 const Date = styled.p`
   font-size: ${baseTokens.fontSizes.sm};
-  color: ${baseTokens.colors.gray400};
+  color: ${baseTokens.colors.blue100};
 `;
 
 /** To DO
@@ -32,7 +32,7 @@ const Date = styled.p`
 const ReadMore = styled.button`
   padding: ${baseTokens.spacing.md};
   background-color: ${baseTokens.colors.blue100};
-  color: ${baseTokens.colors.gray800};
+  color: ${baseTokens.colors.white};
 `;
 
 interface ListItemProps {

@@ -4,18 +4,14 @@ export const baseTokens = {
     black: '#000000',
 
     // grays
-    gray100: '#F7F7F7',
-    gray200: '#E6E6E6',
-    gray300: '#D4D4D4',
-    gray400: '#A3A3A3',
-    gray500: '#737373',
-    gray600: '#525252',
-    gray700: '#404040',
-    gray800: '#262626',
+    gray100: '#F0F0F4',
+    gray200: '#ededf0',
+    gray300: '#58585D',
+    gray400: '#161617',
 
     // blues
-    blue100: '#E6F0FF',
-    blue500: '#2563EB',
+    blue100: '#0060df',
+    blue500: '#003eaa',
     blue700: '#1D4ED8',
 
     // feedback colors
