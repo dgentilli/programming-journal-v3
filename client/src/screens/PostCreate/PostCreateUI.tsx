@@ -1,8 +1,15 @@
+import EntryForm from '../../components/EntryForm';
+
 const PostCreateUI = () => {
   return (
-    <div>
-      <h1>PostCreateUI</h1>
-    </div>
+    <EntryForm
+      titleText=''
+      bodyText=''
+      isSubmitting={false}
+      onSubmit={({ title, body }) =>
+        console.log('form submitted with:', { title, body })
+      }
+    />
   );
 };
 
