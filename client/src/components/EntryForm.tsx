@@ -15,6 +15,10 @@ interface EntryFormProps {
   onSubmit: ({ title, body }: { title: string; body: string }) => void;
 }
 
+interface ButtonProps {
+  disabled?: boolean;
+}
+
 const PageWrapper = styled.div`
   padding: 2rem;
   width: 100%;
@@ -35,6 +39,10 @@ const FormWrapper = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    max-width: 80%;
+  }
 `;
 
 const Label = styled.label`
@@ -70,11 +78,14 @@ const BodyTextarea = styled.textarea`
   }
 `;
 
-const Button = styled.button`
+const Button = styled.button<ButtonProps>`
+  width: 100%;
   background-color: ${baseTokens.colors.blue700};
   color: ${baseTokens.colors.white};
   font-size: ${baseTokens.fontSizes.lg};
   font-weight: 700;
+  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+  opacity: ${(props) => (props.disabled ? 0.6 : 1)};
 `;
 
 const EntryForm = (props: EntryFormProps) => {
