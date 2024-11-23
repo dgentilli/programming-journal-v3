@@ -6,17 +6,15 @@ import {
   useState,
 } from 'react';
 import styled from 'styled-components';
+import Button from './Button';
 import { baseTokens } from '../theme/baseTokens';
+import { ButtonType } from '../../constants/enums';
 
 interface EntryFormProps {
   titleText: string;
   bodyText: string;
   isSubmitting: boolean;
   onSubmit: ({ title, body }: { title: string; body: string }) => void;
-}
-
-interface ButtonProps {
-  disabled?: boolean;
 }
 
 const PageWrapper = styled.div`
@@ -78,16 +76,6 @@ const BodyTextarea = styled.textarea`
   }
 `;
 
-const Button = styled.button<ButtonProps>`
-  width: 100%;
-  background-color: ${baseTokens.colors.blue700};
-  color: ${baseTokens.colors.white};
-  font-size: ${baseTokens.fontSizes.lg};
-  font-weight: 700;
-  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
-  opacity: ${(props) => (props.disabled ? 0.6 : 1)};
-`;
-
 const EntryForm = (props: EntryFormProps) => {
   const { bodyText, titleText, isSubmitting, onSubmit } = props;
   const [title, setTitle] = useState(titleText);
@@ -129,7 +117,12 @@ const EntryForm = (props: EntryFormProps) => {
 
   return (
     <PageWrapper>
-      <PageHeader>Create a journal entry</PageHeader>
+      <PageHeader>
+        {titleText.length > 0
+          ? 'Edit Your Journal Entry'
+          : 'Create a Journal Entry'}
+      </PageHeader>
+
       <FormWrapper onSubmit={handleSubmit}>
         <Label htmlFor='title'>Title</Label>
         <TitleInput
@@ -150,9 +143,12 @@ const EntryForm = (props: EntryFormProps) => {
           spellCheck={true}
           onChange={handleBodyChange}
         />
-        <Button type='submit' disabled={isDisabled}>
-          {isSubmitting ? 'Submitting...' : 'Submit'}
-        </Button>
+        <Button
+          type={ButtonType.SUBMIT}
+          text={isSubmitting ? 'Submitting...' : 'Submit'}
+          isDisabled={isDisabled}
+          onClick={() => {}}
+        />
       </FormWrapper>
     </PageWrapper>
   );

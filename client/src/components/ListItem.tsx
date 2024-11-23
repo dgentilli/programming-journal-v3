@@ -1,5 +1,7 @@
 import { styled } from 'styled-components';
 import { baseTokens } from '../theme/baseTokens';
+import Button from './Button';
+import { ButtonType } from '../../constants/enums';
 
 const Wrapper = styled.li`
   padding: ${baseTokens.spacing.md};
@@ -26,15 +28,6 @@ const Date = styled.p`
   color: ${baseTokens.colors.blue100};
 `;
 
-/** To DO
- * Create a button component. This is just a placeholder
- */
-const ReadMore = styled.button`
-  padding: ${baseTokens.spacing.md};
-  background-color: ${baseTokens.colors.blue100};
-  color: ${baseTokens.colors.white};
-`;
-
 interface ListItemProps {
   postData: {
     title: string;
@@ -54,7 +47,7 @@ const ListItem = (props: ListItemProps) => {
       <Title>{title}</Title>
       <Date>{formattedDate}</Date>
       <Text>{content}</Text>
-      <ReadMore>Details</ReadMore>
+      <Button type={ButtonType.INFO} text='Read More' onClick={() => {}} />
     </Wrapper>
   );
 };

@@ -1,5 +1,7 @@
 import { styled } from 'styled-components';
 import { baseTokens } from '../../theme/baseTokens';
+import Button from '../../components/Button';
+import { ButtonType } from '../../../constants/enums';
 
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -31,17 +33,6 @@ const ButtonWrapper = styled.div`
   gap: ${baseTokens.spacing.md};
 `;
 
-const EditButton = styled.button`
-  padding: ${baseTokens.spacing.md};
-  background-color: ${baseTokens.colors.blue100};
-  color: ${baseTokens.colors.white};
-`;
-
-const DeleteButton = styled.button`
-  padding: ${baseTokens.spacing.md};
-  background-color: ${baseTokens.colors.red};
-  color: ${baseTokens.colors.white};
-`;
 const PostDetailUI = () => {
   return (
     <Wrapper>
@@ -69,8 +60,12 @@ const PostDetailUI = () => {
         </BodyText>
       </TextWrapper>
       <ButtonWrapper>
-        <EditButton>Edit Post</EditButton>
-        <DeleteButton>Delete Post</DeleteButton>
+        <Button type={ButtonType.INFO} text='Edit Entry' onClick={() => {}} />
+        <Button
+          type={ButtonType.DANGER}
+          text='Delete Entry'
+          onClick={() => {}}
+        />
       </ButtonWrapper>
     </Wrapper>
   );
