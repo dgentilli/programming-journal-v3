@@ -35,10 +35,11 @@ interface ListItemProps {
     createdAt: string;
     _id: string;
   };
+  onClick: () => void;
 }
 
 const ListItem = (props: ListItemProps) => {
-  const { postData } = props;
+  const { postData, onClick } = props;
   const { title, content, createdAt } = postData;
   const formattedDate = createdAt.toLocaleString();
 
@@ -47,7 +48,7 @@ const ListItem = (props: ListItemProps) => {
       <Title>{title}</Title>
       <Date>{formattedDate}</Date>
       <Text>{content}</Text>
-      <Button type={ButtonType.INFO} text='Read More' onClick={() => {}} />
+      <Button type={ButtonType.INFO} text='Read More' onClick={onClick} />
     </Wrapper>
   );
 };

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PostsUI from './PostsUI';
+import { useNavigate } from 'react-router-dom';
 
 const MemoizedPostsUI = React.memo(PostsUI);
 
@@ -7,6 +8,12 @@ const mockContent =
   'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Libero natus fugit similique fugiat nobis corporis iusto maxime cupiditate eligendi facilis culpa cum, voluptatem blanditiis. Reprehenderit voluptatum repudiandae distinctio assumenda natus.';
 
 const PostsContainer = () => {
+  const navigate = useNavigate();
+
+  const onClickPostButton = useCallback(() => {
+    navigate('/detail');
+  }, [navigate]);
+
   const mockData = [
     {
       title: 'MongoDB',
@@ -41,7 +48,7 @@ const PostsContainer = () => {
     },
   ];
 
-  return <MemoizedPostsUI postsData={mockData} />;
+  return <MemoizedPostsUI postsData={mockData} onClick={onClickPostButton} />;
 };
 
 export default PostsContainer;

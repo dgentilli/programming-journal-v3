@@ -75,7 +75,7 @@ const Button = (props: ButtonProps) => {
       isFullWidth={isFullWidth}
       onClick={onClick}
     >
-      <ButtonText type={type}>{text || 'Test Btn'}</ButtonText>
+      <ButtonText type={type}>{text}</ButtonText>
     </ButtonWrapper>
   );
 };
