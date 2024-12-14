@@ -1,5 +1,7 @@
-const { Schema, model } = require('mongoose');
-const { bcrypt } = require('bcryptjs');
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+
+const { Schema, model } = mongoose;
 
 // Author Schema
 const authorSchema = new Schema({
@@ -38,6 +40,4 @@ authorSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
 
-const Author = model('Author', authorSchema);
-
-module.exports = { Author };
+module.exports = model('Author', authorSchema);

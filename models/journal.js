@@ -1,4 +1,6 @@
-const { Schema, model } = require('mongoose');
+const mongoose = require('mongoose');
+
+const { Schema, model } = mongoose;
 
 // Journal Schema
 const journalSchema = new Schema(
@@ -56,6 +58,4 @@ journalSchema.pre('save', function (next) {
   next();
 });
 
-const Journal = model('Journal', journalSchema);
-
-module.exports = { Journal };
+module.exports = model('Journal', journalSchema);
