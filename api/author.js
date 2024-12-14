@@ -12,8 +12,10 @@ const validateLoginInput = require('../validation/login');
  * Sign up route
  * @ POST /api/author/signup
  */
-router.post('/signup', (req, res) => {
+
+router.post('/signup', async (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);
+
   if (!isValid) {
     return res.status(400).json({
       success: false,
@@ -24,20 +26,12 @@ router.post('/signup', (req, res) => {
       msg: errors.msg,
     });
   }
-  if (!req.body.email) {
-    let errMsg =
-      'Please provide user data in the request body {email: email@address.com}';
-    return res.status(400).json({
-      success: false,
-      token: null,
-      _id: null,
-      email: null,
-      userName: null,
-      msg: errMsg,
-    });
-  }
-  Author.findOne({ email: req.body.email }).then((user) => {
-    if (user) {
+
+  const { email, password } = req.body;
+
+  try {
+    const existingUser = await Author.findOne({ email });
+    if (existingUser) {
       return res.status(400).json({
         success: false,
         token: null,
@@ -46,31 +40,25 @@ router.post('/signup', (req, res) => {
         userName: null,
         msg: 'Account already exists!',
       });
-    } else {
-      const { email, password } = req.body;
-      const newUser = new Author({
-        email,
-        password,
-      });
-
-      newUser.setPassword(password, (err) => {
-        if (err) {
-          res.status(500).send(err);
-        } else {
-          newUser.save().then((usr) => {
-            res
-              .json({
-                success: true,
-                _id: usr._id,
-                email: usr.email,
-                msg: 'Success! Go To Login!',
-              })
-              .catch((err) => console.log(err));
-          });
-        }
-      });
     }
-  });
+
+    const newUser = new Author({ email });
+    await newUser.setPassword(password); // Call the async method directly
+    const savedUser = await newUser.save();
+
+    return res.status(201).json({
+      success: true,
+      _id: savedUser._id,
+      email: savedUser.email,
+      msg: 'Success! Go To Login!',
+    });
+  } catch (err) {
+    console.error('Error in signup route:', err);
+    return res.status(500).json({
+      success: false,
+      msg: 'Internal server error',
+    });
+  }
 });
 
 /**
