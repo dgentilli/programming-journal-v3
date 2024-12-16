@@ -42,18 +42,38 @@ router.get('/all', (req, res) => {
 });
 
 /**
- * Journal Get All for a specific user Route
- * @ POST /api/journal/all
+ * Get paginated journal entries for a specific user
+ * @ GET /api/journal/all/:author?page=1&limit=10
  */
-router.get('/all/:author', (req, res, err) => {
+router.get('/all/:author', async (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
+
   try {
-    Journal.find({ author: req.params.author })
-      .sort({ _id: -1 })
-      .then((journals) => {
-        res.json(journals);
-      });
+    // Ensure valid page and limit values
+    const pageNumber = Math.max(1, parseInt(page));
+    const pageSize = Math.max(1, parseInt(limit));
+
+    // Fetch journals with pagination
+    const journals = await Journal.find({ author: req.params.author })
+      .sort({ _id: -1 }) // Sort by newest first
+      .skip((pageNumber - 1) * pageSize)
+      .limit(pageSize);
+
+    // Get total count for metadata
+    const totalCount = await Journal.countDocuments({
+      author: req.params.author,
+    });
+
+    // Build response
+    res.json({
+      totalCount,
+      totalPages: Math.ceil(totalCount / pageSize),
+      currentPage: pageNumber,
+      journals,
+    });
   } catch (err) {
-    res.json({ err: 'Something went wrong. Please try again.' });
+    console.error(err);
+    res.status(500).json({ error: 'Something went wrong. Please try again.' });
   }
 });
 
