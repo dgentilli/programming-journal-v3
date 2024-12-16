@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -24,30 +24,52 @@ const fetchJournals = async (
   );
   return response.data;
 };
+
 const PostsContainer = () => {
   const navigate = useNavigate();
-
+  const [page, setPage] = useState(1);
+  const LIMIT = 10;
+  console.log('page', page);
   // hard code userId and token until you finish the auth
   const userId = TEMP_ID;
   const token = TEMP_TOKEN;
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['journals', userId],
-    queryFn: () => fetchJournals(userId, token),
+    queryKey: ['journals', userId, page],
+    queryFn: () => fetchJournals(userId, token, page, LIMIT),
     refetchInterval: 300000, // 5 min in ms
   });
+
+  const { currentPage, totalPages, totalCount, journals } = data || {};
 
   const onClickPostButton = useCallback(() => {
     navigate('/detail');
   }, [navigate]);
 
+  const goToNextPage = useCallback(() => {
+    if (currentPage < totalPages) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  }, [totalPages, currentPage]);
+
+  const goToPreviousPage = useCallback(() => {
+    if (currentPage > 1) {
+      setPage((prevPage) => prevPage - 1);
+    }
+  }, [currentPage]);
+
   return (
     <MemoizedPostsUI
-      postsData={data}
+      journals={journals}
       isLoading={isLoading}
       isError={isError}
       error={error}
+      totalCount={totalCount}
+      totalPages={totalPages}
+      currentPage={currentPage}
       onClick={onClickPostButton}
+      goToNextPage={goToNextPage}
+      goToPreviousPage={goToPreviousPage}
     />
   );
 };

@@ -1,4 +1,4 @@
-export type Post = {
+export type Journal = {
   _id: string;
   title: string;
   content: string;

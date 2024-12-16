@@ -1,37 +1,72 @@
+import { ButtonType } from '../../../constants/enums';
+import Button from '../../components/Button';
 import ListItem from '../../components/ListItem';
-import { Post } from '../../types/common';
+import { Journal } from '../../types/common';
 
 interface PostsUIProps {
-  postsData: Post[] | undefined;
+  journals: Journal[] | undefined;
   isLoading: boolean;
   isError: boolean;
-  error: unknown;
+  error: { message: string } | null;
+  currentPage: number;
+  totalPages: number;
+  totalCount: number;
   onClick: () => void;
+  goToNextPage: () => void;
+  goToPreviousPage: () => void;
 }
 
 const PostsUI = (props: PostsUIProps) => {
-  const { postsData, isLoading, isError, error, onClick } = props;
-  console.log('hey...', postsData);
+  const {
+    journals,
+    isLoading,
+    isError,
+    error,
+    totalCount,
+    totalPages,
+    currentPage,
+    goToNextPage,
+    goToPreviousPage,
+    onClick,
+  } = props;
+  console.log('hey...', journals);
 
   if (isLoading) {
     return <div>Loading...</div>; // Display loading state
   }
 
   if (isError) {
-    return <div>Error: {error.message}</div>; // Display error message
+    return <div>Error: {error?.message}</div>; // Display error message
   }
 
-  if (postsData?.journals.length === 0) {
+  if (journals?.length === 0) {
     return <div>No Posts</div>;
   }
 
   return (
-    <ul>
-      {postsData.journals?.map((post) => {
-        const { _id } = post;
-        return <ListItem key={_id} postData={post} onClick={onClick} />;
-      })}
-    </ul>
+    <>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Button type={ButtonType.INFO} text='Next >>>' onClick={goToNextPage} />
+        <div>{`Page ${currentPage} of ${totalPages} / (${totalCount}) Total Journal Entries`}</div>
+        <Button
+          type={ButtonType.INFO}
+          text='<<< Prev'
+          onClick={goToPreviousPage}
+        />
+      </div>
+      <ul>
+        {journals?.map((post) => {
+          const { _id } = post;
+          return <ListItem key={_id} postData={post} onClick={onClick} />;
+        })}
+      </ul>
+    </>
   );
 };
 
