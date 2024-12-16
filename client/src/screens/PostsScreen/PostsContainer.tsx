@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 import PostsUI from './PostsUI';
+import { TEMP_ID, TEMP_TOKEN } from './temp';
 
 const MemoizedPostsUI = React.memo(PostsUI);
 

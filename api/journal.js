@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const Journal = require('../models/journal');
+const authenticateUser = require('../middlewares/authenticateUser');
 
 /**
  * API TEST route
@@ -74,6 +75,26 @@ router.get('/all/:author', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Something went wrong. Please try again.' });
+  }
+});
+
+/** Get a journal entry by id
+ *  @ GET /api/journal/:id
+ */
+
+router.get('/:id', authenticateUser, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const journal = await Journal.findById(id);
+
+    if (!journal) {
+      return res.status(404).json({ error: 'Entry not found!' });
+    }
+
+    res.json(journal);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
