@@ -1,54 +1,55 @@
 import React, { useCallback } from 'react';
-import PostsUI from './PostsUI';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+
+import PostsUI from './PostsUI';
 
 const MemoizedPostsUI = React.memo(PostsUI);
 
-const mockContent =
-  'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Libero natus fugit similique fugiat nobis corporis iusto maxime cupiditate eligendi facilis culpa cum, voluptatem blanditiis. Reprehenderit voluptatum repudiandae distinctio assumenda natus.';
-
+// Define the API fetch function
+const fetchJournals = async (
+  userId: string,
+  token: string,
+  page = 1,
+  limit = 10
+) => {
+  const response = await axios.get(
+    `http://localhost:5000/api/journal/all/${userId}?page=${page}&limit=${limit}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};
 const PostsContainer = () => {
   const navigate = useNavigate();
+
+  // hard code userId and token until you finish the auth
+  const userId = TEMP_ID;
+  const token = TEMP_TOKEN;
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['journals', userId],
+    queryFn: () => fetchJournals(userId, token),
+    refetchInterval: 300000, // 5 min in ms
+  });
 
   const onClickPostButton = useCallback(() => {
     navigate('/detail');
   }, [navigate]);
 
-  const mockData = [
-    {
-      title: 'MongoDB',
-      content: mockContent,
-      createdAt: '2024-11-10',
-      _id: '1',
-    },
-    {
-      title: 'ExpressJS',
-      content: mockContent,
-      createdAt: '2024-11-09',
-      _id: '2',
-    },
-    { title: 'Redux', content: mockContent, createdAt: '2024-11-09', _id: '3' },
-    {
-      title: 'React Components',
-      content: mockContent,
-      createdAt: '2024-11-08',
-      _id: '4',
-    },
-    {
-      title: 'State and Props',
-      content: mockContent,
-      createdAt: '2024-11-07',
-      _id: '5',
-    },
-    {
-      title: 'JS 101',
-      content: mockContent,
-      createdAt: '2024-11-05',
-      _id: '6',
-    },
-  ];
-
-  return <MemoizedPostsUI postsData={mockData} onClick={onClickPostButton} />;
+  return (
+    <MemoizedPostsUI
+      postsData={data}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
+      onClick={onClickPostButton}
+    />
+  );
 };
 
 export default PostsContainer;
