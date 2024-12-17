@@ -11,7 +11,7 @@ export const router = createBrowserRouter([
     element: <PostsContainer />,
   },
   {
-    path: 'detail',
+    path: 'detail/:id',
     element: <PostDetailContainer />,
   },
   {

@@ -3,6 +3,16 @@ import { baseTokens } from '../../theme/baseTokens';
 import Button from '../../components/Button';
 import { ButtonType } from '../../../constants/enums';
 
+interface JournalDetailProps {
+  title: string;
+  content: string;
+  tags: string[];
+  category: string;
+  isLoading: boolean;
+  isError: boolean;
+  error: { message: string } | null;
+}
+
 const Wrapper = styled.div`
   margin: 0 auto;
   max-width: 900px;
@@ -33,31 +43,23 @@ const ButtonWrapper = styled.div`
   gap: ${baseTokens.spacing.md};
 `;
 
-const PostDetailUI = () => {
+const PostDetailUI = (props: JournalDetailProps) => {
+  const { title, content, tags, category, isLoading, isError, error } = props;
+  console.log(tags, category);
+
+  if (isLoading) {
+    return <div>Loading...</div>; // Display loading state
+  }
+
+  if (isError) {
+    return <div>Error: {error?.message}</div>; // Display error message
+  }
+
   return (
     <Wrapper>
       <TextWrapper>
-        <TitleText>My Awesome Post</TitleText>
-        <BodyText>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, earum.
-          Praesentium, impedit? Vero quod a animi repudiandae error, velit
-          itaque numquam at iure atque sunt aperiam harum dolor voluptates eos.
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, earum.
-          Praesentium, impedit? Vero quod a animi repudiandae error, velit
-          itaque numquam at iure atque sunt aperiam harum dolor voluptates eos.
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, earum.
-          Praesentium, impedit? Vero quod a animi repudiandae error, velit
-          itaque numquam at iure atque sunt aperiam harum dolor voluptates eos.
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, earum.
-          Praesentium, impedit? Vero quod a animi repudiandae error, velit
-          itaque numquam at iure atque sunt aperiam harum dolor voluptates eos.
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, earum.
-          Praesentium, impedit? Vero quod a animi repudiandae error, velit
-          itaque numquam at iure atque sunt aperiam harum dolor voluptates eos.
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, earum.
-          Praesentium, impedit? Vero quod a animi repudiandae error, velit
-          itaque numquam at iure atque sunt aperiam harum dolor voluptates eos.
-        </BodyText>
+        <TitleText>{title}</TitleText>
+        <BodyText>{content}</BodyText>
       </TextWrapper>
       <ButtonWrapper>
         <Button type={ButtonType.INFO} text='Edit Entry' onClick={() => {}} />

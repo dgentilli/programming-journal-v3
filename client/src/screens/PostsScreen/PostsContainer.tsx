@@ -43,9 +43,12 @@ const PostsContainer = () => {
 
   const { currentPage, totalPages, totalCount, journals } = data || {};
 
-  const onClickPostButton = useCallback(() => {
-    navigate('/detail');
-  }, [navigate]);
+  const onClickPostButton = useCallback(
+    (id: string) => {
+      navigate(`/detail/${id}`);
+    },
+    [navigate]
+  );
 
   const goToNextPage = useCallback(() => {
     if (currentPage < totalPages) {

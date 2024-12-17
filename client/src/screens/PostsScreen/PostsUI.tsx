@@ -11,7 +11,7 @@ interface PostsUIProps {
   currentPage: number;
   totalPages: number;
   totalCount: number;
-  onClick: () => void;
+  onClick: (id: string) => void;
   goToNextPage: () => void;
   goToPreviousPage: () => void;
 }
@@ -63,7 +63,9 @@ const PostsUI = (props: PostsUIProps) => {
       <ul>
         {journals?.map((post) => {
           const { _id } = post;
-          return <ListItem key={_id} postData={post} onClick={onClick} />;
+          return (
+            <ListItem key={_id} postData={post} onClick={() => onClick(_id)} />
+          );
         })}
       </ul>
     </>
