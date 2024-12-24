@@ -1,6 +1,8 @@
 import { styled } from 'styled-components';
 import { baseTokens } from '../../theme/baseTokens';
 import Button from '../../components/Button';
+import Tag from '../../components/Tag';
+import Spacer from '../../components/Spacer';
 import { ButtonType } from '../../../constants/enums';
 
 interface JournalDetailProps {
@@ -43,9 +45,27 @@ const ButtonWrapper = styled.div`
   gap: ${baseTokens.spacing.md};
 `;
 
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: ${baseTokens.spacing.md};
+`;
+
+const CategoryText = styled.p`
+  color: ${baseTokens.colors.blue700};
+`;
+
 const PostDetailUI = (props: JournalDetailProps) => {
-  const { title, content, tags, category, isLoading, isError, error } = props;
-  console.log(tags, category);
+  const { title, content, category, isLoading, isError, error } = props;
+  const tags = [
+    'React Native',
+    'Mobile Development',
+    'JavaScript',
+    'TypeScript',
+    'UI',
+  ];
 
   if (isLoading) {
     return <div>Loading...</div>; // Display loading state
@@ -57,6 +77,15 @@ const PostDetailUI = (props: JournalDetailProps) => {
 
   return (
     <Wrapper>
+      <Row>
+        <CategoryText>Category: {category}</CategoryText>
+      </Row>
+      <Row>
+        {tags.map((tag) => (
+          <Tag tagText={tag} />
+        ))}
+      </Row>
+      <Spacer height={baseTokens.spacing.md} />
       <TextWrapper>
         <TitleText>{title}</TitleText>
         <BodyText>{content}</BodyText>
