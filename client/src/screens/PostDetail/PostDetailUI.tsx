@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { baseTokens } from '../../theme/baseTokens';
 import Button from '../../components/Button';
-import Tag from '../../components/Tag';
+import TagWrapper from '../../components/TagWrapper';
 import Spacer from '../../components/Spacer';
 import { ButtonType } from '../../../constants/enums';
 
@@ -84,9 +84,7 @@ const PostDetailUI = (props: JournalDetailProps) => {
         <CategoryText>Category: {category}</CategoryText>
       </Row>
       <Row>
-        {tags.map((tag) => (
-          <Tag tagText={tag} />
-        ))}
+        <TagWrapper tags={tags} />
       </Row>
       <Spacer height={baseTokens.spacing.md} />
       <TextWrapper>

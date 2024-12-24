@@ -15,7 +15,7 @@ interface TagProps {
 const Tag = (props: TagProps) => {
   const { tagText } = props;
 
-  return <TagWrapper>{tagText}</TagWrapper>;
+  return <TagWrapper key={tagText}>{tagText}</TagWrapper>;
 };
 
 export default Tag;
