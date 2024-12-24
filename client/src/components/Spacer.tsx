@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { baseTokens } from '../theme/baseTokens';
 
 interface SpacerProps {
-  height?: number;
+  height?: string;
 }
 
 const VerticalSpacer = styled.div<SpacerProps>`
@@ -11,7 +11,7 @@ const VerticalSpacer = styled.div<SpacerProps>`
   background-color: transparent;
 `;
 
-const DEFAULT_HEIGHT = parseInt(baseTokens.spacing.md, 10);
+const DEFAULT_HEIGHT = baseTokens.spacing.md;
 
 const Spacer = (props: SpacerProps) => {
   const { height = DEFAULT_HEIGHT } = props;
