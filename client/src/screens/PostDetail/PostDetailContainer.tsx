@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -21,7 +22,12 @@ const fetchJournalEntry = async (id: string) => {
 const PostDetailContainer = () => {
   const { id } = useParams();
   const journalId = id || '';
+  const navigate = useNavigate();
   console.log('id from detail screen', id);
+
+  const goToEditPage = useCallback(() => {
+    navigate(`/edit/${id}`);
+  }, [id, navigate]);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['journals', id],
@@ -42,6 +48,7 @@ const PostDetailContainer = () => {
       isLoading={isLoading}
       isError={isError}
       error={error}
+      onClickEdit={goToEditPage}
     />
   );
 };

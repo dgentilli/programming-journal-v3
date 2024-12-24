@@ -13,6 +13,7 @@ interface JournalDetailProps {
   isLoading: boolean;
   isError: boolean;
   error: { message: string } | null;
+  onClickEdit: () => void;
 }
 
 const Wrapper = styled.div`
@@ -58,14 +59,16 @@ const CategoryText = styled.p`
 `;
 
 const PostDetailUI = (props: JournalDetailProps) => {
-  const { title, content, category, isLoading, isError, error } = props;
-  const tags = [
-    'React Native',
-    'Mobile Development',
-    'JavaScript',
-    'TypeScript',
-    'UI',
-  ];
+  const {
+    title,
+    content,
+    tags,
+    category,
+    isLoading,
+    isError,
+    error,
+    onClickEdit,
+  } = props;
 
   if (isLoading) {
     return <div>Loading...</div>; // Display loading state
@@ -91,7 +94,11 @@ const PostDetailUI = (props: JournalDetailProps) => {
         <BodyText>{content}</BodyText>
       </TextWrapper>
       <ButtonWrapper>
-        <Button type={ButtonType.INFO} text='Edit Entry' onClick={() => {}} />
+        <Button
+          type={ButtonType.INFO}
+          text='Edit Entry'
+          onClick={onClickEdit}
+        />
         <Button
           type={ButtonType.DANGER}
           text='Delete Entry'

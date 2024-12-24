@@ -19,7 +19,7 @@ export const router = createBrowserRouter([
     element: <PostCreateContainer />,
   },
   {
-    path: 'edit',
+    path: 'edit/:id',
     element: <PostEditContainer />,
   },
 ]);
