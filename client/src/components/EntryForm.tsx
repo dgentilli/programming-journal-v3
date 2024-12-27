@@ -9,12 +9,25 @@ import styled from 'styled-components';
 import Button from './Button';
 import { baseTokens } from '../theme/baseTokens';
 import { ButtonType } from '../../constants/enums';
+import Spacer from './Spacer';
 
 interface EntryFormProps {
   titleText: string;
   bodyText: string;
+  categoryText: string;
+  tagsArray: string[] | undefined;
   isSubmitting: boolean;
-  onSubmit: ({ title, body }: { title: string; body: string }) => void;
+  onSubmit: ({
+    title,
+    body,
+    category,
+    tags,
+  }: {
+    title: string;
+    body: string;
+    category: string;
+    tags: string[];
+  }) => void;
 }
 
 const PageWrapper = styled.div`
@@ -48,7 +61,7 @@ const Label = styled.label`
   color: ${baseTokens.colors.gray400};
 `;
 
-const TitleInput = styled.input`
+const OneLineInput = styled.input`
   width: 100%;
   padding: 0.75rem;
   font-size: ${baseTokens.fontSizes.md};
@@ -77,14 +90,32 @@ const BodyTextarea = styled.textarea`
 `;
 
 const EntryForm = (props: EntryFormProps) => {
-  const { bodyText, titleText, isSubmitting, onSubmit } = props;
+  const {
+    bodyText,
+    titleText,
+    categoryText,
+    tagsArray,
+    isSubmitting,
+    onSubmit,
+  } = props;
   const [title, setTitle] = useState(titleText);
   const [body, setBody] = useState(bodyText);
+  const [category, setCategory] = useState(categoryText);
+  const [tagTextInput, setTagTextInput] = useState('');
+  const [tags, setTags] = useState(tagsArray || []);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const formatTags = () => {
+    const temp = tagTextInput
+      .split(/[\s,]+/) // split on a space and strip commas
+      .filter((tag) => tag.trim() !== ''); // make sure we remove empty strings
+    setTags(temp);
+  };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onSubmit({ title, body });
+    formatTags();
+    onSubmit({ title, body, category, tags });
   };
 
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -93,6 +124,14 @@ const EntryForm = (props: EntryFormProps) => {
 
   const handleBodyChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setBody(event.target.value);
+  };
+
+  const handleCategoryChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setCategory(event.target.value);
+  };
+
+  const handleTagsChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setTagTextInput(event.target.value);
   };
 
   const isDisabled = isSubmitting || !title.length || !body.length;
@@ -125,7 +164,7 @@ const EntryForm = (props: EntryFormProps) => {
 
       <FormWrapper onSubmit={handleSubmit}>
         <Label htmlFor='title'>Title</Label>
-        <TitleInput
+        <OneLineInput
           id='title'
           name='title'
           type='text'
@@ -143,6 +182,28 @@ const EntryForm = (props: EntryFormProps) => {
           spellCheck={true}
           onChange={handleBodyChange}
         />
+        <Label htmlFor='category'>Category</Label>
+        <OneLineInput
+          id='category'
+          name='category'
+          type='text'
+          placeholder='Category'
+          value={category}
+          spellCheck={true}
+          onChange={handleCategoryChange}
+        />
+        <Label htmlFor='tags'>Tags (Separate with commas)</Label>
+        <OneLineInput
+          id='tags'
+          name='tags'
+          type='text'
+          placeholder='Tags'
+          value={tagTextInput}
+          spellCheck={true}
+          // onKeyDown={handleKeyPress}
+          onChange={handleTagsChange}
+        />
+        <Spacer height={baseTokens.spacing.md} />
         <Button
           type={ButtonType.SUBMIT}
           text={isSubmitting ? 'Submitting...' : 'Submit'}

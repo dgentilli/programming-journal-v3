@@ -5,9 +5,11 @@ const PostCreateUI = () => {
     <EntryForm
       titleText=''
       bodyText=''
+      categoryText=''
+      tagsArray={[]}
       isSubmitting={false}
-      onSubmit={({ title, body }) =>
-        console.log('form submitted with:', { title, body })
+      onSubmit={({ title, body, category, tags }) =>
+        console.log('form submitted with:', { title, body, category, tags })
       }
     />
   );
