@@ -16,22 +16,36 @@ router.get('/test', (req, res) => res.json({ msg: 'Blog API test works!' }));
  * @ POST /api/journal/create
  */
 
-router.post('/create', async (req, res) => {
-  if (!req.body.title) {
-    let errMsg = 'Please provide a title';
-    res.json({ err: errMsg });
-  } else if (!req.body.content) {
-    let errMsg = 'Please enter some text';
-    res.json({ err: errMsg });
-  } else {
-    const { title, content, author } = req.body;
+router.post('/create', authenticateUser, async (req, res) => {
+  try {
+    const { title, content, author, tags = [], category = 'Other' } = req.body;
+
+    // Validate required fields
+    if (!title) {
+      return res.status(400).json({ error: 'Please provide a title.' });
+    }
+    if (!content) {
+      return res.status(400).json({ error: 'Please enter some text.' });
+    }
+
+    // Create the new journal entry
     const newJournal = new Journal({
       title,
       content,
       author,
+      tags,
+      category,
     });
+
+    // Save to database
     await newJournal.save();
-    res.json(newJournal);
+
+    res.status(201).json(newJournal);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: error.message || 'Server error. Please try again later.',
+    });
   }
 });
 

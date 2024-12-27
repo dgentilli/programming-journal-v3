@@ -25,7 +25,7 @@ const journalSchema = new Schema(
       {
         type: String,
         trim: true,
-        maxlength: 30, // Limit tag length
+        maxlength: 60, // Limit tag length
       },
     ],
     category: {
