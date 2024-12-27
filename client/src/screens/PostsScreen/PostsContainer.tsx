@@ -62,6 +62,10 @@ const PostsContainer = () => {
     }
   }, [currentPage]);
 
+  const createNewEntry = useCallback(() => {
+    navigate('/create');
+  }, [navigate]);
+
   return (
     <MemoizedPostsUI
       journals={journals}
@@ -74,6 +78,7 @@ const PostsContainer = () => {
       onClick={onClickPostButton}
       goToNextPage={goToNextPage}
       goToPreviousPage={goToPreviousPage}
+      createNewEntry={createNewEntry}
     />
   );
 };

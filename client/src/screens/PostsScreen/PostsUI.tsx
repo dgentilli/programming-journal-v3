@@ -1,7 +1,9 @@
 import { ButtonType } from '../../../constants/enums';
 import Button from '../../components/Button';
 import ListItem from '../../components/ListItem';
+import Footer from '../../components/Footer';
 import { Journal } from '../../types/common';
+import beach from '../../assets/beach_wideScreen.jpg';
 
 interface PostsUIProps {
   journals: Journal[] | undefined;
@@ -14,6 +16,7 @@ interface PostsUIProps {
   onClick: (id: string) => void;
   goToNextPage: () => void;
   goToPreviousPage: () => void;
+  createNewEntry: () => void;
 }
 
 const PostsUI = (props: PostsUIProps) => {
@@ -28,6 +31,7 @@ const PostsUI = (props: PostsUIProps) => {
     goToNextPage,
     goToPreviousPage,
     onClick,
+    createNewEntry,
   } = props;
   console.log('hey...', journals);
 
@@ -45,6 +49,13 @@ const PostsUI = (props: PostsUIProps) => {
 
   return (
     <>
+      <header>
+        <img
+          src={beach}
+          alt='A wide angle image of a tropical beach at sunset.'
+          style={{ width: '100%', height: 'auto' }}
+        />
+      </header>
       <div
         style={{
           display: 'flex',
@@ -52,13 +63,24 @@ const PostsUI = (props: PostsUIProps) => {
           alignItems: 'center',
         }}
       >
-        <Button type={ButtonType.INFO} text='Next >>>' onClick={goToNextPage} />
-        <div>{`Page ${currentPage} of ${totalPages} / (${totalCount}) Total Journal Entries`}</div>
         <Button
           type={ButtonType.INFO}
-          text='<<< Prev'
-          onClick={goToPreviousPage}
+          text='New Journal Entry'
+          onClick={createNewEntry}
         />
+        <div>{`Page ${currentPage} of ${totalPages} / (${totalCount}) Total Journal Entries`}</div>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <Button
+            type={ButtonType.INFO}
+            text='Next >>>'
+            onClick={goToNextPage}
+          />
+          <Button
+            type={ButtonType.INFO}
+            text='<<< Prev'
+            onClick={goToPreviousPage}
+          />
+        </div>
       </div>
       <ul>
         {journals?.map((post) => {
@@ -68,6 +90,22 @@ const PostsUI = (props: PostsUIProps) => {
           );
         })}
       </ul>
+      <Footer>
+        <Button type={ButtonType.INFO} text='Next >>>' onClick={goToNextPage} />
+        <div style={{ marginLeft: '36px' }}>
+          <Button
+            type={ButtonType.INFO}
+            text='New Journal Entry'
+            onClick={createNewEntry}
+          />
+        </div>
+
+        <Button
+          type={ButtonType.INFO}
+          text='<<< Prev'
+          onClick={goToPreviousPage}
+        />
+      </Footer>
     </>
   );
 };
