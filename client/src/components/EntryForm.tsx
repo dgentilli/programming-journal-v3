@@ -9,26 +9,8 @@ import styled from 'styled-components';
 import Button from './Button';
 import { baseTokens } from '../theme/baseTokens';
 import { ButtonType } from '../../constants/enums';
+import { EntryFormProps } from '../types/common';
 import Spacer from './Spacer';
-
-interface EntryFormProps {
-  titleText: string;
-  bodyText: string;
-  categoryText: string;
-  tagsArray: string[] | undefined;
-  isSubmitting: boolean;
-  onSubmit: ({
-    title,
-    body,
-    category,
-    tags,
-  }: {
-    title: string;
-    body: string;
-    category: string;
-    tags: string[];
-  }) => void;
-}
 
 const PageWrapper = styled.div`
   padding: 2rem;
@@ -96,6 +78,7 @@ const EntryForm = (props: EntryFormProps) => {
     categoryText,
     tagsArray,
     isSubmitting,
+    author,
     onSubmit,
   } = props;
   const [title, setTitle] = useState(titleText);
@@ -115,7 +98,8 @@ const EntryForm = (props: EntryFormProps) => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     formatTags();
-    onSubmit({ title, body, category, tags });
+    const formData = { title, content: body, category, tags, author };
+    onSubmit(formData);
   };
 
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -200,7 +184,6 @@ const EntryForm = (props: EntryFormProps) => {
           placeholder='Tags'
           value={tagTextInput}
           spellCheck={true}
-          // onKeyDown={handleKeyPress}
           onChange={handleTagsChange}
         />
         <Spacer height={baseTokens.spacing.md} />

@@ -16,9 +16,10 @@ router.get('/test', (req, res) => res.json({ msg: 'Blog API test works!' }));
  * @ POST /api/journal/create
  */
 
-router.post('/create', authenticateUser, async (req, res) => {
+router.post('/create', async (req, res) => {
   try {
     const { title, content, author, tags = [], category = 'Other' } = req.body;
+    console.log('req.body', req.body);
 
     // Validate required fields
     if (!title) {

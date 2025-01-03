@@ -1,6 +1,18 @@
 import EntryForm from '../../components/EntryForm';
+interface PostCreateProps {
+  author: string;
+  createJournal: (formData: {
+    title: string;
+    content: string;
+    category: string;
+    tags: string[];
+    author: string;
+  }) => void;
+}
 
-const PostCreateUI = () => {
+const PostCreateUI = (props: PostCreateProps) => {
+  const { author, createJournal } = props;
+
   return (
     <EntryForm
       titleText=''
@@ -8,9 +20,8 @@ const PostCreateUI = () => {
       categoryText=''
       tagsArray={[]}
       isSubmitting={false}
-      onSubmit={({ title, body, category, tags }) =>
-        console.log('form submitted with:', { title, body, category, tags })
-      }
+      author={author}
+      onSubmit={createJournal}
     />
   );
 };
