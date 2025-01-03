@@ -1,5 +1,5 @@
 import React from 'react';
-// import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import PostCreateUI from './PostCreateUI';
 
@@ -23,6 +23,7 @@ const PostCreateContainer = () => {
   };
 
   const author = '5e79c66ef3a2f5001741cbce';
+
   return <MemoizedPostCreateUI author={author} createJournal={createJournal} />;
 };
 

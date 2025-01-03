@@ -11,6 +11,7 @@ import { baseTokens } from '../theme/baseTokens';
 import { ButtonType } from '../../constants/enums';
 import { EntryFormProps } from '../types/common';
 import Spacer from './Spacer';
+import { useMutation } from '@tanstack/react-query';
 
 const PageWrapper = styled.div`
   padding: 2rem;
@@ -88,6 +89,12 @@ const EntryForm = (props: EntryFormProps) => {
   const [tags, setTags] = useState(tagsArray || []);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
+  const mutation = useMutation({
+    mutationFn: ({ title, content, category, tags, author }) => {
+      return onSubmit({ title, content, category, tags, author });
+    },
+  });
+
   const formatTags = () => {
     const temp = tagTextInput
       .split(/[\s,]+/) // split on a space and strip commas
@@ -99,7 +106,8 @@ const EntryForm = (props: EntryFormProps) => {
     event.preventDefault();
     formatTags();
     const formData = { title, content: body, category, tags, author };
-    onSubmit(formData);
+    // onSubmit(formData);
+    mutation.mutate(formData);
   };
 
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -140,6 +148,8 @@ const EntryForm = (props: EntryFormProps) => {
 
   return (
     <PageWrapper>
+      {mutation.isPending && <div>Submitting....</div>}
+      {mutation.isError && <div>Error!!!</div>}
       <PageHeader>
         {titleText.length > 0
           ? 'Edit Your Journal Entry'
