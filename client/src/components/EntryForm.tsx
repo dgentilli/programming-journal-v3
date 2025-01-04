@@ -106,7 +106,6 @@ const EntryForm = (props: EntryFormProps) => {
     event.preventDefault();
     formatTags();
     const formData = { title, content: body, category, tags, author };
-    // onSubmit(formData);
     mutation.mutate(formData);
   };
 
@@ -126,7 +125,8 @@ const EntryForm = (props: EntryFormProps) => {
     setTagTextInput(event.target.value);
   };
 
-  const isDisabled = isSubmitting || !title.length || !body.length;
+  const isDisabled =
+    mutation.isPending || title.length === 0 || body.length === 0;
 
   useLayoutEffect(() => {
     const adjustHeight = () => {
@@ -146,66 +146,75 @@ const EntryForm = (props: EntryFormProps) => {
     }
   }, []);
 
-  return (
-    <PageWrapper>
-      {mutation.isPending && <div>Submitting....</div>}
-      {mutation.isError && <div>Error!!!</div>}
-      <PageHeader>
-        {titleText.length > 0
-          ? 'Edit Your Journal Entry'
-          : 'Create a Journal Entry'}
-      </PageHeader>
+  const renderItems = () => {
+    if (mutation.isPending) return <div>Loading....</div>;
+    if (mutation.isError) {
+      return <div>{mutation.error.message || 'Something went wrong'}</div>;
+    }
 
-      <FormWrapper onSubmit={handleSubmit}>
-        <Label htmlFor='title'>Title</Label>
-        <OneLineInput
-          id='title'
-          name='title'
-          type='text'
-          placeholder='Title'
-          value={title}
-          spellCheck={true}
-          onChange={handleTitleChange}
-        />
-        <Label htmlFor='body'>Body</Label>
-        <BodyTextarea
-          id='body'
-          name='body'
-          placeholder='Body'
-          value={body}
-          spellCheck={true}
-          onChange={handleBodyChange}
-        />
-        <Label htmlFor='category'>Category</Label>
-        <OneLineInput
-          id='category'
-          name='category'
-          type='text'
-          placeholder='Category'
-          value={category}
-          spellCheck={true}
-          onChange={handleCategoryChange}
-        />
-        <Label htmlFor='tags'>Tags (Separate with commas)</Label>
-        <OneLineInput
-          id='tags'
-          name='tags'
-          type='text'
-          placeholder='Tags'
-          value={tagTextInput}
-          spellCheck={true}
-          onChange={handleTagsChange}
-        />
-        <Spacer height={baseTokens.spacing.md} />
-        <Button
-          type={ButtonType.SUBMIT}
-          text={isSubmitting ? 'Submitting...' : 'Submit'}
-          isDisabled={isDisabled}
-          onClick={() => {}}
-        />
-      </FormWrapper>
-    </PageWrapper>
-  );
+    return (
+      <PageWrapper>
+        {mutation.isPending && <div>Submitting....</div>}
+        {mutation.isError && <div>Error!!!</div>}
+        <PageHeader>
+          {titleText.length > 0
+            ? 'Edit Your Journal Entry'
+            : 'Create a Journal Entry'}
+        </PageHeader>
+
+        <FormWrapper onSubmit={handleSubmit}>
+          <Label htmlFor='title'>Title</Label>
+          <OneLineInput
+            id='title'
+            name='title'
+            type='text'
+            placeholder='Title'
+            value={title}
+            spellCheck={true}
+            onChange={handleTitleChange}
+          />
+          <Label htmlFor='body'>Body</Label>
+          <BodyTextarea
+            id='body'
+            name='body'
+            placeholder='Body'
+            value={body}
+            spellCheck={true}
+            onChange={handleBodyChange}
+          />
+          <Label htmlFor='category'>Category</Label>
+          <OneLineInput
+            id='category'
+            name='category'
+            type='text'
+            placeholder='Category'
+            value={category}
+            spellCheck={true}
+            onChange={handleCategoryChange}
+          />
+          <Label htmlFor='tags'>Tags (Separate with commas)</Label>
+          <OneLineInput
+            id='tags'
+            name='tags'
+            type='text'
+            placeholder='Tags'
+            value={tagTextInput}
+            spellCheck={true}
+            onChange={handleTagsChange}
+          />
+          <Spacer height={baseTokens.spacing.md} />
+          <Button
+            type={ButtonType.SUBMIT}
+            text={isSubmitting ? 'Submitting...' : 'Submit'}
+            isDisabled={isDisabled}
+            onClick={() => {}}
+          />
+        </FormWrapper>
+      </PageWrapper>
+    );
+  };
+
+  return renderItems();
 };
 
 export default EntryForm;
