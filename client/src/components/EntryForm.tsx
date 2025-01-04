@@ -5,6 +5,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from './Button';
 import { baseTokens } from '../theme/baseTokens';
@@ -12,6 +13,7 @@ import { ButtonType } from '../../constants/enums';
 import { EntryFormProps } from '../types/common';
 import Spacer from './Spacer';
 import { useMutation } from '@tanstack/react-query';
+import TagWrapper from './TagWrapper';
 
 const PageWrapper = styled.div`
   padding: 2rem;
@@ -72,6 +74,14 @@ const BodyTextarea = styled.textarea`
   }
 `;
 
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: ${baseTokens.spacing.md};
+`;
+
 const EntryForm = (props: EntryFormProps) => {
   const {
     bodyText,
@@ -88,11 +98,13 @@ const EntryForm = (props: EntryFormProps) => {
   const [tagTextInput, setTagTextInput] = useState('');
   const [tags, setTags] = useState(tagsArray || []);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const navigate = useNavigate();
 
   const mutation = useMutation({
     mutationFn: ({ title, content, category, tags, author }) => {
       return onSubmit({ title, content, category, tags, author });
     },
+    onSuccess: () => navigate('/'),
   });
 
   const formatTags = () => {
@@ -123,6 +135,14 @@ const EntryForm = (props: EntryFormProps) => {
 
   const handleTagsChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTagTextInput(event.target.value);
+  };
+
+  const handleTagsKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && tagTextInput.trim() !== '') {
+      setTags((prevTags) => [...prevTags, tagTextInput.trim()]);
+      setTagTextInput(''); // Clear the input
+      event.preventDefault(); // Prevent form submission if inside a form
+    }
   };
 
   const isDisabled =
@@ -192,7 +212,7 @@ const EntryForm = (props: EntryFormProps) => {
             spellCheck={true}
             onChange={handleCategoryChange}
           />
-          <Label htmlFor='tags'>Tags (Separate with commas)</Label>
+          <Label htmlFor='tags'>Tags (Press Enter to Save)</Label>
           <OneLineInput
             id='tags'
             name='tags'
@@ -201,7 +221,11 @@ const EntryForm = (props: EntryFormProps) => {
             value={tagTextInput}
             spellCheck={true}
             onChange={handleTagsChange}
+            onKeyDown={handleTagsKeyDown}
           />
+          <Row>
+            <TagWrapper tags={tags} />
+          </Row>
           <Spacer height={baseTokens.spacing.md} />
           <Button
             type={ButtonType.SUBMIT}
