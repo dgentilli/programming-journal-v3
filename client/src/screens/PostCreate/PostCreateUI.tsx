@@ -8,21 +8,35 @@ interface PostCreateProps {
     tags: string[];
     author: string;
   }) => void;
+  goBack: () => void;
+  onSuccess: () => void;
 }
 
 const PostCreateUI = (props: PostCreateProps) => {
-  const { author, createJournal } = props;
+  const { author, createJournal, goBack, onSuccess } = props;
 
   return (
-    <EntryForm
-      titleText=''
-      bodyText=''
-      categoryText=''
-      tagsArray={[]}
-      isSubmitting={false}
-      author={author}
-      onSubmit={createJournal}
-    />
+    <>
+      <a
+        href='#'
+        onClick={(event) => {
+          event.preventDefault();
+          goBack();
+        }}
+      >
+        Go Back
+      </a>
+      <EntryForm
+        titleText=''
+        bodyText=''
+        categoryText=''
+        tagsArray={[]}
+        isSubmitting={false}
+        author={author}
+        onSubmit={createJournal}
+        onSuccess={onSuccess}
+      />
+    </>
   );
 };
 

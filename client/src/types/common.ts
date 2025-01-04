@@ -25,4 +25,5 @@ export interface EntryFormProps {
     tags: string[];
     author: string;
   }) => void;
+  onSuccess: () => void;
 }

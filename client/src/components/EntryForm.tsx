@@ -5,7 +5,6 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from './Button';
 import { baseTokens } from '../theme/baseTokens';
@@ -91,6 +90,7 @@ const EntryForm = (props: EntryFormProps) => {
     isSubmitting,
     author,
     onSubmit,
+    onSuccess,
   } = props;
   const [title, setTitle] = useState(titleText);
   const [body, setBody] = useState(bodyText);
@@ -98,13 +98,12 @@ const EntryForm = (props: EntryFormProps) => {
   const [tagTextInput, setTagTextInput] = useState('');
   const [tags, setTags] = useState(tagsArray || []);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const navigate = useNavigate();
 
   const mutation = useMutation({
     mutationFn: ({ title, content, category, tags, author }) => {
       return onSubmit({ title, content, category, tags, author });
     },
-    onSuccess: () => navigate('/'),
+    onSuccess: () => onSuccess(),
   });
 
   const formatTags = () => {

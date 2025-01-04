@@ -1,30 +1,47 @@
-import React from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import React, { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import PostCreateUI from './PostCreateUI';
 
 const MemoizedPostCreateUI = React.memo(PostCreateUI);
 
 const PostCreateContainer = () => {
-  const createJournal = async (formData: {
-    title: string;
-    content: string;
-    category: string;
-    tags: string[];
-    author: string;
-  }) => {
-    console.log('formData recd as prop by createJournal', formData);
-    const response = await axios.post(
-      'http://localhost:5000/api/journal/create',
-      formData
-    );
-    console.log('response.data from createJournal', response.data);
-    return response.data;
-  };
-
+  const navigate = useNavigate();
   const author = '5e79c66ef3a2f5001741cbce';
 
-  return <MemoizedPostCreateUI author={author} createJournal={createJournal} />;
+  const createJournal = useCallback(
+    async (formData: {
+      title: string;
+      content: string;
+      category: string;
+      tags: string[];
+      author: string;
+    }) => {
+      const response = await axios.post(
+        'http://localhost:5000/api/journal/create',
+        formData
+      );
+      return response.data;
+    },
+    []
+  );
+
+  const goBack = useCallback(() => {
+    window.history.back();
+  }, []);
+
+  const onSuccess = useCallback(() => {
+    navigate('/');
+  }, [navigate]);
+
+  return (
+    <MemoizedPostCreateUI
+      author={author}
+      goBack={goBack}
+      createJournal={createJournal}
+      onSuccess={onSuccess}
+    />
+  );
 };
 
 export default PostCreateContainer;
