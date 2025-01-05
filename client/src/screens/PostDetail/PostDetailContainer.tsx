@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
 import PostDetailUI from './PostDetailUI';
 import { TEMP_TOKEN } from '../PostsScreen/temp';
+import { Journal } from '../../types/common';
 
 const MemoizedPostDetailUI = React.memo(PostDetailUI);
 
@@ -23,19 +24,22 @@ const PostDetailContainer = () => {
   const { id } = useParams();
   const journalId = id || '';
   const navigate = useNavigate();
-  console.log('id from detail screen', id);
+  const queryClient = useQueryClient();
 
   const goToEditPage = useCallback(() => {
     navigate(`/edit/${id}`);
   }, [id, navigate]);
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['journals', id],
+    queryKey: ['journals', 'detail', id],
     queryFn: () => fetchJournalEntry(journalId),
     refetchInterval: 300000, // 5 min in ms
+    initialData: () => {
+      return queryClient
+        .getQueryData<Journal[]>(['journals', 'list'])
+        ?.find((journal) => journal._id === id);
+    },
   });
-
-  console.log('DATA!!', data);
 
   const { title, content, tags, category } = data || {};
 

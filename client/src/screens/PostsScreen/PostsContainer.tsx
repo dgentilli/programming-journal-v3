@@ -30,13 +30,12 @@ const PostsContainer = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const LIMIT = 10;
-  console.log('page', page);
   // hard code userId and token until you finish the auth
   const userId = TEMP_ID;
   const token = TEMP_TOKEN;
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['journals', userId, page],
+    queryKey: ['journals', 'list', userId, page],
     queryFn: () => fetchJournals(userId, token, page, LIMIT),
     refetchInterval: 300000, // 5 min in ms
   });
