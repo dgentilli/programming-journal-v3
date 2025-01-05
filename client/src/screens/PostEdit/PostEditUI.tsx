@@ -1,17 +1,44 @@
 import EntryForm from '../../components/EntryForm';
 
-const testBody =
-  'Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque perspiciatis iure magnam sapiente repudiandae sunt architecto laudantium eum dolorem ea.';
-const testTitle = 'My Post!!!';
-const PostEditUI = () => {
+interface JournalEditProps {
+  title: string;
+  content: string;
+  tags: string[];
+  category: string;
+  author: string;
+  isLoading: boolean;
+  onSubmit: (formData: {
+    title: string;
+    content: string;
+    category: string;
+    tags: string[];
+    author: string;
+  }) => void;
+  onSuccess: () => void;
+}
+
+const PostEditUI = (props: JournalEditProps) => {
+  const {
+    title,
+    content,
+    category,
+    tags,
+    isLoading,
+    author,
+    onSubmit,
+    onSuccess,
+  } = props;
+
   return (
     <EntryForm
-      titleText={testTitle}
-      bodyText={testBody}
-      isSubmitting={false}
-      onSubmit={({ title, body }) =>
-        console.log('form submitted with:', { title, body })
-      }
+      titleText={title}
+      bodyText={content}
+      categoryText={category}
+      tagsArray={tags}
+      author={author}
+      isSubmitting={isLoading}
+      onSubmit={onSubmit}
+      onSuccess={onSuccess}
     />
   );
 };
