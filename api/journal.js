@@ -113,4 +113,49 @@ router.get('/:id', authenticateUser, async (req, res) => {
   }
 });
 
+/**
+ *  Edit a journal entry by id
+ *  @ PATCH /api/journal/:id
+ */
+
+router.put('/edit/:id', async (req, res) => {
+  try {
+    const { title, content, author, tags = [], category = 'Other' } = req.body;
+    console.log('req.body', req.body);
+    const { id } = req.params;
+    console.log('req.params.id', id);
+
+    // Validate required fields
+    if (!title) {
+      return res.status(400).json({ error: 'Please provide a title.' });
+    }
+    if (!content) {
+      return res.status(400).json({ error: 'Please enter some text.' });
+    }
+
+    // Find the existing journal entry by ID
+    const existingJournal = await Journal.findById(id);
+    if (!existingJournal) {
+      return res.status(404).json({ error: 'Journal entry not found.' });
+    }
+
+    // Update the fields
+    existingJournal.title = title;
+    existingJournal.content = content;
+    existingJournal.author = author || existingJournal.author; // Preserve existing if not provided
+    existingJournal.tags = tags;
+    existingJournal.category = category;
+
+    // Save the updated journal entry
+    const updatedJournal = await existingJournal.save();
+
+    res.status(200).json(updatedJournal); // Return updated resource
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: error.message || 'Server error. Please try again later.',
+    });
+  }
+});
+
 module.exports = router;
