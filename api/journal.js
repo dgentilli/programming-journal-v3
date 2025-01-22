@@ -118,7 +118,7 @@ router.get('/:id', authenticateUser, async (req, res) => {
  *  @ PATCH /api/journal/:id
  */
 
-router.put('/edit/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const { title, content, author, tags = [], category = 'Other' } = req.body;
     console.log('req.body', req.body);
@@ -152,6 +152,32 @@ router.put('/edit/:id', async (req, res) => {
     res.status(200).json(updatedJournal); // Return updated resource
   } catch (error) {
     console.error(error);
+    res.status(500).json({
+      error: error.message || 'Server error. Please try again later.',
+    });
+  }
+});
+
+/**
+ *  Delete a journal entry by id
+ *  @ DELETE /api/journal/:id
+ */
+
+router.delete('/:id', async (req, res) => {
+  try {
+    // find the entry
+    const { id } = req.params;
+
+    const deletedEntry = await Journal.findByIdAndDelete(id);
+
+    if (!deletedEntry) {
+      return res
+        .status(404)
+        .json({ error: 'Something went wrong while deleting.' });
+    }
+
+    res.status(200).json({ message: 'Journal entry was deleted' });
+  } catch (error) {
     res.status(500).json({
       error: error.message || 'Server error. Please try again later.',
     });
