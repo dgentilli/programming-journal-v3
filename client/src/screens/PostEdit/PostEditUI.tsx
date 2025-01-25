@@ -7,6 +7,8 @@ interface JournalEditProps {
   category: string;
   author: string;
   isLoading: boolean;
+  isError: boolean;
+  error: { message: string } | null;
   onSubmit: (formData: {
     title: string;
     content: string;
