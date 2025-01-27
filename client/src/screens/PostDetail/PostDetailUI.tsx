@@ -2,18 +2,35 @@ import { styled } from 'styled-components';
 import { baseTokens } from '../../theme/baseTokens';
 import Button from '../../components/Button';
 import TagWrapper from '../../components/TagWrapper';
+import DeleteModal from '../../components/DeleteModal';
 import Spacer from '../../components/Spacer';
 import { ButtonType } from '../../../constants/enums';
+import { UseMutationResult } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+
+type DeleteResponse = { message: string }; // Adjust this to match your actual response shape
+
+// UseMutationResult Type
+export type DeleteJournalMutation = UseMutationResult<
+  DeleteResponse, // TData (API response type)
+  AxiosError, // TError (error type)
+  string // TVariables (argument passed to mutationFn, in this case, the id)
+>;
 
 interface JournalDetailProps {
   title: string;
+  id: string | undefined;
   content: string;
   tags: string[];
   category: string;
   isLoading: boolean;
   isError: boolean;
   error: { message: string } | null;
-  onClickEdit: () => void;
+  isModalOpen: boolean;
+  mutation: DeleteJournalMutation;
+  onClickDelete: (id: string) => void;
+  closeModal: () => void;
+  openModal: () => void;
 }
 
 const Wrapper = styled.div`
@@ -61,13 +78,18 @@ const CategoryText = styled.p`
 const PostDetailUI = (props: JournalDetailProps) => {
   const {
     title,
+    id = '',
     content,
     tags,
     category,
     isLoading,
     isError,
     error,
+    isModalOpen,
+    mutation,
     onClickEdit,
+    closeModal,
+    openModal,
   } = props;
 
   if (isLoading) {
@@ -80,6 +102,15 @@ const PostDetailUI = (props: JournalDetailProps) => {
 
   return (
     <Wrapper>
+      {isModalOpen && (
+        <DeleteModal
+          onDelete={() => {
+            mutation.mutate(id);
+            closeModal();
+          }}
+          closeModal={closeModal}
+        />
+      )}
       <Row>
         <CategoryText>Category: {category}</CategoryText>
       </Row>
@@ -100,7 +131,7 @@ const PostDetailUI = (props: JournalDetailProps) => {
         <Button
           type={ButtonType.DANGER}
           text='Delete Entry'
-          onClick={() => {}}
+          onClick={openModal}
         />
       </ButtonWrapper>
     </Wrapper>

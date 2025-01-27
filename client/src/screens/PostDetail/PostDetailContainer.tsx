@@ -1,10 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 
-import PostDetailUI from './PostDetailUI';
+import PostDetailUI, { DeleteJournalMutation } from './PostDetailUI';
 import { TEMP_TOKEN } from '../PostsScreen/temp';
 import { Journal } from '../../types/common';
 
@@ -20,8 +20,17 @@ const fetchJournalEntry = async (id: string) => {
   return response.data;
 };
 
+const deleteJournalEntry = async (id: string) => {
+  const response = await axios.delete(
+    `http://localhost:5000/api/journal/${id}`
+  );
+  console.log('response.data from delete', response.data);
+  return response.data;
+};
+
 const PostDetailContainer = () => {
   const { id } = useParams();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const journalId = id || '';
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -41,18 +50,45 @@ const PostDetailContainer = () => {
     },
   });
 
+  const mutation = useMutation({
+    mutationFn: deleteJournalEntry, // Function to call for deletion
+    onSuccess: () => {
+      // Navigate to /home after successful deletion
+      navigate('/');
+
+      // Invalidate the query cache for the journal list
+
+      queryClient.invalidateQueries(['journals']);
+    },
+    onError: (error) => {
+      console.error('Failed to delete post:', error);
+    },
+  });
+
+  const openModal = useCallback(() => {
+    setIsModalOpen(true);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setIsModalOpen(false);
+  }, []);
   const { title, content, tags, category } = data || {};
 
   return (
     <MemoizedPostDetailUI
       title={title}
+      id={id}
       content={content}
       tags={tags}
       category={category}
       isLoading={isLoading}
       isError={isError}
       error={error}
+      isModalOpen={isModalOpen}
+      mutation={mutation as DeleteJournalMutation}
       onClickEdit={goToEditPage}
+      openModal={openModal}
+      closeModal={closeModal}
     />
   );
 };

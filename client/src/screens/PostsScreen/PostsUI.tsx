@@ -33,8 +33,6 @@ const PostsUI = (props: PostsUIProps) => {
     onClick,
     createNewEntry,
   } = props;
-  console.log('hey...', journals);
-
   if (isLoading) {
     return <div>Loading...</div>; // Display loading state
   }
