@@ -12,6 +12,35 @@ const authenticateUser = require('../middlewares/authenticateUser');
 router.get('/test', (req, res) => res.json({ msg: 'Blog API test works!' }));
 
 /**
+ * Journal search route
+ * @ GET /api/journal/search?query=searchTerm&page=1&limit=10
+ */
+
+router.get('/search', async (req, res) => {
+  try {
+    const { query, page = 1, limit = 10 } = req.query; // Get query + pagination params
+
+    if (!query || typeof query !== 'string') {
+      return res.status(400).json({ message: 'Search query is required' });
+    }
+
+    // MongoDB Text Search
+    const searchResults = await Journal.find(
+      { $text: { $search: query } }, // Search indexed fields
+      { score: { $meta: 'searchScore' } } // Get relevance score
+    )
+      .sort({ score: { $meta: 'textScore' } }) // Sort by relevance
+      .skip((page - 1) * limit) // Pagination: Skip previous results
+      .limit(parseInt(limit)); // Limit results per page
+
+    res.json(searchResults);
+  } catch (error) {
+    console.error('Search error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+/**
  * Journal Create Route
  * @ POST /api/journal/create
  */
