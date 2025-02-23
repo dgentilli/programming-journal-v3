@@ -4,6 +4,7 @@ import ListItem from '../../components/ListItem';
 import Footer from '../../components/Footer';
 import { Journal } from '../../types/common';
 import beach from '../../assets/beach_wideScreen.jpg';
+import Navbar from '../../components/Navbar';
 
 interface PostsUIProps {
   journals: Journal[] | undefined;
@@ -47,12 +48,9 @@ const PostsUI = (props: PostsUIProps) => {
 
   return (
     <>
+      <Navbar />
       <header>
-        <img
-          src={beach}
-          alt='A wide angle image of a tropical beach at sunset.'
-          style={{ width: '100%', height: 'auto' }}
-        />
+        <h1>Programming Journal</h1>
       </header>
       <div
         style={{
