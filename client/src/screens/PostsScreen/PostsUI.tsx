@@ -5,6 +5,7 @@ import Footer from '../../components/Footer';
 import { Journal } from '../../types/common';
 import beach from '../../assets/beach_wideScreen.jpg';
 import Navbar from '../../components/Navbar';
+import CustomLink from '../../components/CustomLink';
 
 interface PostsUIProps {
   journals: Journal[] | undefined;
@@ -66,16 +67,8 @@ const PostsUI = (props: PostsUIProps) => {
         />
         <div>{`Page ${currentPage} of ${totalPages} / (${totalCount}) Total Journal Entries`}</div>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
-          <Button
-            type={ButtonType.INFO}
-            text='Next >>>'
-            onClick={goToNextPage}
-          />
-          <Button
-            type={ButtonType.INFO}
-            text='<<< Prev'
-            onClick={goToPreviousPage}
-          />
+          <CustomLink title='<<< Prev' onClick={goToPreviousPage} />
+          <CustomLink title='>>> Next' onClick={goToNextPage} />
         </div>
       </div>
       <ul>
