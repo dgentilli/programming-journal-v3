@@ -3,9 +3,9 @@ import Button from '../../components/Button';
 import ListItem from '../../components/ListItem';
 import Footer from '../../components/Footer';
 import { Journal } from '../../types/common';
-import beach from '../../assets/beach_wideScreen.jpg';
 import Navbar from '../../components/Navbar';
 import CustomLink from '../../components/CustomLink';
+import ScreenWrapper from '../../components/ScreenWrapper';
 
 interface PostsUIProps {
   journals: Journal[] | undefined;
@@ -48,11 +48,7 @@ const PostsUI = (props: PostsUIProps) => {
   }
 
   return (
-    <>
-      <Navbar />
-      <header>
-        <h1>Programming Journal</h1>
-      </header>
+    <ScreenWrapper screenTitle='Programming Journal'>
       <div
         style={{
           display: 'flex',
@@ -75,6 +71,7 @@ const PostsUI = (props: PostsUIProps) => {
         {journals?.map((post) => {
           const { _id } = post;
           return (
+            //@ts-expect-error the data are fine
             <ListItem key={_id} postData={post} onClick={() => onClick(_id)} />
           );
         })}
@@ -95,7 +92,7 @@ const PostsUI = (props: PostsUIProps) => {
           onClick={goToPreviousPage}
         />
       </Footer>
-    </>
+    </ScreenWrapper>
   );
 };
 

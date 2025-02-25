@@ -7,6 +7,7 @@ import Spacer from '../../components/Spacer';
 import { ButtonType } from '../../../constants/enums';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import ScreenWrapper from '../../components/ScreenWrapper';
 
 type DeleteResponse = { message: string }; // Adjust this to match your actual response shape
 
@@ -101,7 +102,7 @@ const PostDetailUI = (props: JournalDetailProps) => {
   }
 
   return (
-    <Wrapper>
+    <ScreenWrapper screenTitle={`${title}`}>
       {isModalOpen && (
         <DeleteModal
           onDelete={() => {
@@ -134,7 +135,7 @@ const PostDetailUI = (props: JournalDetailProps) => {
           onClick={openModal}
         />
       </ButtonWrapper>
-    </Wrapper>
+    </ScreenWrapper>
   );
 };
 
