@@ -47,3 +47,5 @@ export const baseTokens = {
     full: '9999px', // Fully rounded
   },
 };
+
+export type BaseTokens = typeof baseTokens;

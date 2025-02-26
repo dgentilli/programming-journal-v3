@@ -1,14 +1,14 @@
 import styled from 'styled-components';
-import { baseTokens } from '../theme/baseTokens';
+import { baseTokens, BaseTokens } from '../theme/baseTokens';
 
 type StyleProps = {
   color?: string;
-  fontSize?: typeof baseTokens.fontSizes;
+  fontSize?: keyof BaseTokens['fontSizes'];
 };
 
 const ButtonLink = styled.button<StyleProps>`
-  color: ${baseTokens.colors.blue100};
-  font-style: ${(props) => props.fontSize || baseTokens.fontSizes.lg};
+  color: ${(props) => props.color || baseTokens.colors.blue100};
+  font-size: ${(props) => props.fontSize || baseTokens.fontSizes.lg};
   background-color: transparent;
 `;
 
@@ -16,7 +16,7 @@ interface LinkProps {
   title: string;
   onClick: () => void;
   color?: string;
-  fontSize?: typeof baseTokens.fontSizes;
+  fontSize?: keyof BaseTokens['fontSizes'];
 }
 
 const CustomLink = (props: LinkProps) => {

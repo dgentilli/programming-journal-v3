@@ -1,5 +1,7 @@
 import styled from 'styled-components';
-import { baseTokens } from '../theme/baseTokens';
+import { BaseTokens, baseTokens } from '../theme/baseTokens';
+import CustomLink from './CustomLink';
+import { useNavigate } from 'react-router-dom';
 
 const NavWrapper = styled.nav`
   width: 100%;
@@ -21,17 +23,19 @@ const ListItem = styled.li`
   color: ${baseTokens.colors.white};
 `;
 
-const Home = styled.p`
-  font-size: 1.5rem;
-  font-weight: 900;
-`;
-
 const Navbar = () => {
+  const navigate = useNavigate();
+
   return (
     <NavWrapper>
       <List>
         <ListItem>
-          <Home>Home</Home>
+          <CustomLink
+            title={'Home'}
+            color={baseTokens.colors.white}
+            fontSize={baseTokens.fontSizes.xxl as keyof BaseTokens['fontSizes']}
+            onClick={() => navigate('/')}
+          />
         </ListItem>
         <ListItem>
           <input

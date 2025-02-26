@@ -3,7 +3,6 @@ import Button from '../../components/Button';
 import ListItem from '../../components/ListItem';
 import Footer from '../../components/Footer';
 import { Journal } from '../../types/common';
-import Navbar from '../../components/Navbar';
 import CustomLink from '../../components/CustomLink';
 import ScreenWrapper from '../../components/ScreenWrapper';
 
