@@ -1,13 +1,13 @@
 import { styled } from 'styled-components';
 import { baseTokens } from '../../theme/baseTokens';
-import Button from '../../components/Button';
-import TagWrapper from '../../components/TagWrapper';
-import DeleteModal from '../../components/DeleteModal';
-import Spacer from '../../components/Spacer';
+import Button from '../../components-simple/Button';
+import TagWrapper from '../../components-simple/TagWrapper';
+import DeleteModal from '../../components-simple/DeleteModal';
+import Spacer from '../../components-simple/Spacer';
 import { ButtonType } from '../../../constants/enums';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import ScreenWrapper from '../../components/ScreenWrapper';
+import ScreenWrapper from '../../components-simple/ScreenWrapper';
 
 type DeleteResponse = { message: string }; // Adjust this to match your actual response shape
 

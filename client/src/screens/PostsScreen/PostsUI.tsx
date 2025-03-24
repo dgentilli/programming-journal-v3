@@ -1,10 +1,10 @@
 import { ButtonType } from '../../../constants/enums';
-import Button from '../../components/Button';
-import ListItem from '../../components/ListItem';
-import Footer from '../../components/Footer';
+import Button from '../../components-simple/Button';
+import ListItem from '../../components-simple/ListItem';
+import Footer from '../../components-simple/Footer';
 import { Journal } from '../../types/common';
-import CustomLink from '../../components/CustomLink';
-import ScreenWrapper from '../../components/ScreenWrapper';
+import CustomLink from '../../components-simple/CustomLink';
+import ScreenWrapper from '../../components-simple/ScreenWrapper';
 
 interface PostsUIProps {
   journals: Journal[] | undefined;

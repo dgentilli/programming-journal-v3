@@ -1,4 +1,4 @@
-import EntryForm from '../../components/EntryForm';
+import EntryForm from '../../components-simple/EntryForm';
 
 interface JournalEditProps {
   title: string;
