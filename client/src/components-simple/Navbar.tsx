@@ -4,6 +4,7 @@ import CustomLink from './CustomLink';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import SearchModal from '../components-complex/search/SearchModal';
+import SearchContainer from '../components-complex/search/SearchContainer';
 
 const NavWrapper = styled.nav`
   width: 100%;
@@ -28,7 +29,7 @@ const ListItem = styled.li`
 const Navbar = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const closeModal = () => setIsModalOpen(false);
   return (
     <NavWrapper>
       <List>
@@ -49,7 +50,7 @@ const Navbar = () => {
           />
         </ListItem>
       </List>
-      {isModalOpen && <SearchModal />}
+      {isModalOpen && <SearchContainer closeModal={closeModal} />}
     </NavWrapper>
   );
 };

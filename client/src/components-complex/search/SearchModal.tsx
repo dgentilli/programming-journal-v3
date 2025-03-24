@@ -4,6 +4,8 @@ import Button from '../../components-simple/Button';
 import { ButtonType } from '../../../constants/enums';
 import Spacer from '../../components-simple/Spacer';
 import CustomLink from '../../components-simple/CustomLink';
+import SearchInput from '../../components-simple/SearchInput';
+import ListItem from '../../components-simple/ListItem';
 
 const fadeIn = keyframes`
   from {
@@ -46,6 +48,7 @@ const Wrapper = styled.div`
   border-radius: ${baseTokens.radius.md};
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   animation: ${slideIn} 0.3s ease;
+  overflow-y: auto;
 `;
 
 const Message = styled.p`
@@ -54,53 +57,58 @@ const Message = styled.p`
 `;
 
 const ButtonWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  margin-top: ${baseTokens.spacing.lg};
+  flex: 1;
+  justify-content: space-around;
 `;
 
-const SearchInput = styled.input`
-  padding: ${baseTokens.spacing.md};
-  width: 50%;
-  border-radius: ${baseTokens.radius.md};
-`;
-
+export type Result = {
+  id: string;
+  title: string;
+  text: string;
+};
 interface SearchModalProps {
+  searchResults: Result[];
   closeModal: () => void;
 }
 
 const SearchModal = (props: SearchModalProps) => {
-  const { closeModal } = props;
-
+  const { searchResults, closeModal } = props;
+  console.log('searchResults: ', searchResults);
   return (
     <Overlay>
       <Wrapper>
         <Message>Search for a journal entry</Message>
         <Spacer height={baseTokens.spacing.xl} />
-        <SearchInput
-          id='search'
-          name='search'
-          type='search'
-          placeholder='Search'
-          // value={title}
-          spellCheck={true}
-          // onChange={handleTitleChange}
-        />
-        <ButtonWrapper>
-          <Button
-            type={ButtonType.SECONDARY}
-            text='Submit'
-            onClick={() => {}}
-          />
-          <CustomLink
-            title='Close'
-            color={baseTokens.colors.blue500}
-            fontSize={baseTokens.fontSizes.md as keyof BaseTokens['fontSizes']}
-            onClick={() => {}}
-          />
-        </ButtonWrapper>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+          }}
+        >
+          <SearchInput value={'test'} onChange={() => {}} />
+          <ButtonWrapper>
+            <Button
+              type={ButtonType.SECONDARY}
+              text='Submit'
+              onClick={() => {}}
+            />
+            <CustomLink
+              title='Close'
+              color={baseTokens.colors.blue500}
+              fontSize={
+                baseTokens.fontSizes.md as keyof BaseTokens['fontSizes']
+              }
+              onClick={closeModal}
+            />
+          </ButtonWrapper>
+        </div>
         <Spacer height={baseTokens.spacing.xl} />
+        <ul style={{ margin: 8 }}>
+          {searchResults?.map((result) => {
+            return <ListItem postData={result} />;
+          })}
+        </ul>
       </Wrapper>
     </Overlay>
   );
