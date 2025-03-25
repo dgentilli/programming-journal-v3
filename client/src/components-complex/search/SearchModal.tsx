@@ -6,6 +6,7 @@ import Spacer from '../../components-simple/Spacer';
 import CustomLink from '../../components-simple/CustomLink';
 import SearchInput from '../../components-simple/SearchInput';
 import ListItem from '../../components-simple/ListItem';
+import { Journal } from '../../types/common';
 
 const fadeIn = keyframes`
   from {
@@ -67,7 +68,7 @@ export type Result = {
   text: string;
 };
 interface SearchModalProps {
-  searchResults: Result[];
+  searchResults: Partial<Journal>[];
   closeModal: () => void;
 }
 
@@ -105,7 +106,8 @@ const SearchModal = (props: SearchModalProps) => {
         </div>
         <Spacer height={baseTokens.spacing.xl} />
         <ul style={{ margin: 8 }}>
-          {searchResults?.map((result) => {
+          {searchResults?.map((result: Partial<Journal>) => {
+            //@ts-expect-error mock data
             return <ListItem postData={result} />;
           })}
         </ul>
