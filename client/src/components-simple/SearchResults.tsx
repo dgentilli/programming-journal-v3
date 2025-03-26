@@ -33,9 +33,9 @@ const SearchResults = (props: SearchResultsProps) => {
 
   return (
     <>
-      <div>{`Page ${currentPage} of ${totalPages} / (${totalCount}) Total Journal Entries`}</div>
-      <div style={{ display: 'flex', gap: '0.5rem' }}>
+      <div>
         <CustomLink title='<<< Prev' onClick={() => {}} />
+        {`Page ${currentPage} of ${totalPages} / (${totalCount}) Total Journal Entries`}
         <CustomLink title='>>> Next' onClick={() => {}} />
       </div>
       <ul style={{ margin: 8 }}>

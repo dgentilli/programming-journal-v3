@@ -1,7 +1,5 @@
 import { styled, keyframes } from 'styled-components';
 import { BaseTokens, baseTokens } from '../../theme/baseTokens';
-import Button from '../../components-simple/Button';
-import { ButtonType } from '../../../constants/enums';
 import Spacer from '../../components-simple/Spacer';
 import CustomLink from '../../components-simple/CustomLink';
 import SearchInput from '../../components-simple/SearchInput';
@@ -57,11 +55,6 @@ const Message = styled.p`
   color: ${baseTokens.colors.blue500};
 `;
 
-const ButtonWrapper = styled.div`
-  flex: 1;
-  justify-content: space-around;
-`;
-
 export type Result = {
   id: string;
   title: string;
@@ -92,34 +85,17 @@ const SearchModal = (props: SearchModalProps) => {
     <Overlay>
       <Wrapper>
         <Message>Search for a journal entry</Message>
+        <CustomLink
+          title='Close'
+          color={baseTokens.colors.blue500}
+          fontSize={baseTokens.fontSizes.md as keyof BaseTokens['fontSizes']}
+          onClick={closeModal}
+        />
         <Spacer height={baseTokens.spacing.xl} />
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-          }}
-        >
-          <SearchInput
-            value={query}
-            onChange={(input: string) => setQuery(input)}
-          />
-          <ButtonWrapper>
-            <Button
-              type={ButtonType.SECONDARY}
-              text='Submit'
-              onClick={() => {}}
-            />
-            <CustomLink
-              title='Close'
-              color={baseTokens.colors.blue500}
-              fontSize={
-                baseTokens.fontSizes.md as keyof BaseTokens['fontSizes']
-              }
-              onClick={closeModal}
-            />
-          </ButtonWrapper>
-        </div>
+        <SearchInput
+          value={query}
+          onChange={(input: string) => setQuery(input)}
+        />
         <Spacer height={baseTokens.spacing.xl} />
         <SearchResults
           searchResults={searchResults}
