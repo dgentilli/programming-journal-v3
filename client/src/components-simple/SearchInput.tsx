@@ -10,7 +10,7 @@ const SearchInputUI = styled.input`
 
 interface SearchInputProps {
   value: string;
-  onChange: () => void;
+  onChange: (input: string) => void;
 }
 
 const SearchInput = (props: SearchInputProps) => {
@@ -24,7 +24,7 @@ const SearchInput = (props: SearchInputProps) => {
       placeholder='Search'
       value={value}
       spellCheck={true}
-      onChange={onChange}
+      onChange={(event) => onChange(event.target.value)}
     />
   );
 };

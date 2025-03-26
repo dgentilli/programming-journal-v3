@@ -28,7 +28,7 @@ const Date = styled.p`
   color: ${baseTokens.colors.blue100};
 `;
 
-interface ListItemProps {
+export interface ListItemProps {
   postData: {
     title: string;
     content: string;

@@ -1,53 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SearchModal from './SearchModal';
-import { Journal } from '../../types/common';
+import axios from 'axios';
+import { TEMP_TOKEN } from '../../screens/PostsScreen/temp';
+import { useQuery } from '@tanstack/react-query';
 
 const MemoizedSearchModal = React.memo(SearchModal);
 interface SearchContainerProps {
   closeModal: () => void;
 }
 
+const searchJournals = async (query: string, page: number, token: string) => {
+  const response = await axios.get(
+    `http://localhost:5000/api/journal/search?query=${query}&page=${page}&limit=10`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};
+
+const PAGE = 1;
+
 const SearchContainer = (props: SearchContainerProps) => {
+  const token = TEMP_TOKEN;
+  const [query, setQuery] = useState('');
+  // const [page, setPage] = useState(1);
   const { closeModal } = props;
 
-  const postData: Partial<Journal>[] = [
-    {
-      _id: '01',
-      createdAt: '234',
-      title: 'React: Learning some stuff',
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto doloribus deserunt possimus reprehenderit neque magni reiciendis fuga? Architecto at rem temporibus commodi. Autem modi earum sequi? Error facere odit consequatur?',
-    },
-    {
-      _id: '02',
-      createdAt: '123',
-      title: 'CSS: Some other stuf',
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto doloribus deserunt possimus reprehenderit neque magni reiciendis fuga? Architecto at rem temporibus commodi. Autem modi earum sequi? Error facere odit consequatur?',
-    },
-    {
-      _id: '03',
-      createdAt: '123',
-      title: 'TS: Fun with type safety!',
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto doloribus deserunt possimus reprehenderit neque magni reiciendis fuga? Architecto at rem temporibus commodi. Autem modi earum sequi? Error facere odit consequatur?',
-    },
-    {
-      _id: '04',
-      createdAt: '123',
-      title: 'React: Epic React',
-      content: 'Lorem ipsum dolor sit amet.',
-    },
-    {
-      _id: '05',
-      createdAt: '123',
-      title: 'JS: array methods',
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto doloribus deserunt possimus reprehenderit neque magni reiciendis fuga? Architecto at rem temporibus commodi. Autem modi earum sequi? Error facere odit consequatur?',
-    },
-  ];
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['searchResults', query, PAGE],
+    queryFn: () => searchJournals(query, PAGE, token),
+    refetchInterval: 300000, // 5 min in ms
+  });
+
+  console.log('data from search', data);
+
   return (
-    <MemoizedSearchModal searchResults={postData} closeModal={closeModal} />
+    <MemoizedSearchModal
+      searchResults={data}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
+      query={query}
+      setQuery={setQuery}
+      closeModal={closeModal}
+    />
   );
 };
 

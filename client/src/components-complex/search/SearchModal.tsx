@@ -5,8 +5,8 @@ import { ButtonType } from '../../../constants/enums';
 import Spacer from '../../components-simple/Spacer';
 import CustomLink from '../../components-simple/CustomLink';
 import SearchInput from '../../components-simple/SearchInput';
-import ListItem from '../../components-simple/ListItem';
 import { Journal } from '../../types/common';
+import SearchResults from '../../components-simple/SearchResults';
 
 const fadeIn = keyframes`
   from {
@@ -68,13 +68,26 @@ export type Result = {
   text: string;
 };
 interface SearchModalProps {
-  searchResults: Partial<Journal>[];
+  searchResults: Journal[] | undefined;
+  query: string;
+  isLoading: boolean;
+  isError: boolean;
+  error: { message: string } | null;
+  setQuery: (arg: string) => void;
   closeModal: () => void;
 }
 
 const SearchModal = (props: SearchModalProps) => {
-  const { searchResults, closeModal } = props;
-  console.log('searchResults: ', searchResults);
+  const {
+    searchResults,
+    query,
+    isLoading,
+    isError,
+    error,
+    setQuery,
+    closeModal,
+  } = props;
+
   return (
     <Overlay>
       <Wrapper>
@@ -87,7 +100,10 @@ const SearchModal = (props: SearchModalProps) => {
             justifyContent: 'flex-start',
           }}
         >
-          <SearchInput value={'test'} onChange={() => {}} />
+          <SearchInput
+            value={query}
+            onChange={(input: string) => setQuery(input)}
+          />
           <ButtonWrapper>
             <Button
               type={ButtonType.SECONDARY}
@@ -105,12 +121,13 @@ const SearchModal = (props: SearchModalProps) => {
           </ButtonWrapper>
         </div>
         <Spacer height={baseTokens.spacing.xl} />
-        <ul style={{ margin: 8 }}>
-          {searchResults?.map((result: Partial<Journal>) => {
-            //@ts-expect-error mock data
-            return <ListItem postData={result} />;
-          })}
-        </ul>
+        <SearchResults
+          searchResults={searchResults}
+          isLoading={isLoading}
+          isError={isError}
+          error={error}
+          query={query}
+        />
       </Wrapper>
     </Overlay>
   );
