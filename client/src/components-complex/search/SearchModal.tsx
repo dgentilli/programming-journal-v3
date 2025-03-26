@@ -60,26 +60,39 @@ export type Result = {
   title: string;
   text: string;
 };
+
+type SearchResultData = {
+  searchResults: Journal[];
+  totalCount: number;
+  totalPages: number;
+  currentPage: number;
+};
 interface SearchModalProps {
-  searchResults: Journal[] | undefined;
+  data: SearchResultData;
   query: string;
   isLoading: boolean;
   isError: boolean;
   error: { message: string } | null;
   setQuery: (arg: string) => void;
   closeModal: () => void;
+  goToNextPage: () => void;
+  goToPreviousPage: () => void;
 }
 
 const SearchModal = (props: SearchModalProps) => {
   const {
-    searchResults,
+    data,
     query,
     isLoading,
     isError,
     error,
     setQuery,
     closeModal,
+    goToNextPage,
+    goToPreviousPage,
   } = props;
+
+  const { searchResults, totalCount, totalPages, currentPage } = data || {};
 
   return (
     <Overlay>
@@ -103,6 +116,11 @@ const SearchModal = (props: SearchModalProps) => {
           isError={isError}
           error={error}
           query={query}
+          totalCount={totalCount}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          goToNextPage={goToNextPage}
+          goToPreviousPage={goToPreviousPage}
         />
       </Wrapper>
     </Overlay>

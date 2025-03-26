@@ -19,10 +19,16 @@ router.get('/test', (req, res) => res.json({ msg: 'Blog API test works!' }));
 router.get('/search', async (req, res) => {
   try {
     const { query, page = 1, limit = 10 } = req.query; // Get query + pagination params
+    const pageNumber = Math.max(1, parseInt(page));
+    const pageSize = Math.max(1, parseInt(limit));
 
     if (!query || typeof query !== 'string') {
       return res.status(400).json({ message: 'Search query is required' });
     }
+
+    const totalCount = await Journal.countDocuments({
+      $text: { $search: query },
+    });
 
     // MongoDB Text Search
     const searchResults = await Journal.find(
@@ -33,7 +39,12 @@ router.get('/search', async (req, res) => {
       .skip((page - 1) * limit) // Pagination: Skip previous results
       .limit(parseInt(limit)); // Limit results per page
 
-    res.json(searchResults);
+    res.json({
+      searchResults,
+      totalCount,
+      totalPages: Math.ceil(totalCount / pageSize),
+      currentPage: pageNumber,
+    });
   } catch (error) {
     console.error('Search error:', error);
     res.status(500).json({ message: 'Server error' });

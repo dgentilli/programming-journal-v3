@@ -3,18 +3,32 @@ import CustomLink from './CustomLink';
 import ListItem from './ListItem';
 
 interface SearchResultsProps {
-  searchResults: Journal[] | undefined;
+  searchResults: Journal[];
   isLoading: boolean;
   isError: boolean;
   error: { message: string } | null;
   query: string;
+  totalCount: number;
+  currentPage: number;
+  totalPages: number;
+  goToPreviousPage: () => void;
+  goToNextPage: () => void;
 }
 
 const SearchResults = (props: SearchResultsProps) => {
-  const { searchResults, isLoading, isError, error, query } = props;
-  const currentPage = 1;
-  const totalPages = 5;
-  const totalCount = 10;
+  const {
+    searchResults,
+    isLoading,
+    isError,
+    error,
+    query,
+    totalCount,
+    currentPage,
+    totalPages,
+    goToNextPage,
+    goToPreviousPage,
+  } = props;
+
   if (query.length === 0) {
     return <div>Enter a Search Term</div>;
   }
@@ -34,9 +48,9 @@ const SearchResults = (props: SearchResultsProps) => {
   return (
     <>
       <div>
-        <CustomLink title='<<< Prev' onClick={() => {}} />
+        <CustomLink title='<<< Prev' onClick={goToPreviousPage} />
         {`Page ${currentPage} of ${totalPages} / (${totalCount}) Total Journal Entries`}
-        <CustomLink title='>>> Next' onClick={() => {}} />
+        <CustomLink title='>>> Next' onClick={goToNextPage} />
       </div>
       <ul style={{ margin: 8 }}>
         {searchResults?.map((result: Journal) => {
