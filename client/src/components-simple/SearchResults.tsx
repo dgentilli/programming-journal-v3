@@ -13,6 +13,7 @@ interface SearchResultsProps {
   totalPages: number;
   goToPreviousPage: () => void;
   goToNextPage: () => void;
+  onClickListItem: (id: string) => void;
 }
 
 const SearchResults = (props: SearchResultsProps) => {
@@ -27,6 +28,7 @@ const SearchResults = (props: SearchResultsProps) => {
     totalPages,
     goToNextPage,
     goToPreviousPage,
+    onClickListItem,
   } = props;
 
   if (query.length === 0) {
@@ -54,8 +56,11 @@ const SearchResults = (props: SearchResultsProps) => {
       </div>
       <ul style={{ margin: 8 }}>
         {searchResults?.map((result: Journal) => {
-          //@ts-expect-error guard clause above should handle this
-          return <ListItem postData={result} />;
+          const { _id } = result;
+          return (
+            //@ts-expect-error this works correctly based on manual testing
+            <ListItem postData={result} onClick={() => onClickListItem(_id)} />
+          );
         })}
       </ul>
     </>

@@ -77,6 +77,7 @@ interface SearchModalProps {
   closeModal: () => void;
   goToNextPage: () => void;
   goToPreviousPage: () => void;
+  onClickListItem: (id: string) => void;
 }
 
 const SearchModal = (props: SearchModalProps) => {
@@ -90,6 +91,7 @@ const SearchModal = (props: SearchModalProps) => {
     closeModal,
     goToNextPage,
     goToPreviousPage,
+    onClickListItem,
   } = props;
 
   const { searchResults, totalCount, totalPages, currentPage } = data || {};
@@ -121,6 +123,7 @@ const SearchModal = (props: SearchModalProps) => {
           totalPages={totalPages}
           goToNextPage={goToNextPage}
           goToPreviousPage={goToPreviousPage}
+          onClickListItem={onClickListItem}
         />
       </Wrapper>
     </Overlay>

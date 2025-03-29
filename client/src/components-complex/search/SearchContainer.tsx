@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import SearchModal from './SearchModal';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { TEMP_TOKEN } from '../../screens/PostsScreen/temp';
 import { useQuery } from '@tanstack/react-query';
 
@@ -26,6 +27,7 @@ const SearchContainer = (props: SearchContainerProps) => {
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
   const { closeModal } = props;
+  const navigate = useNavigate();
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['searchResults', query, page],
@@ -47,6 +49,13 @@ const SearchContainer = (props: SearchContainerProps) => {
     }
   }, [currentPage]);
 
+  const onClickListItem = useCallback(
+    (id: string) => {
+      navigate(`/detail/${id}`);
+    },
+    [navigate]
+  );
+
   return (
     <MemoizedSearchModal
       data={data}
@@ -58,6 +67,7 @@ const SearchContainer = (props: SearchContainerProps) => {
       closeModal={closeModal}
       goToNextPage={goToNextPage}
       goToPreviousPage={goToPreviousPage}
+      onClickListItem={onClickListItem}
     />
   );
 };
