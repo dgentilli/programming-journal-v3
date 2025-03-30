@@ -1,6 +1,6 @@
 import { Journal } from '../types/common';
-import CustomLink from './CustomLink';
 import ListItem from './ListItem';
+import Pagination, { PaginationProps } from './Pagination';
 
 interface SearchResultsProps {
   searchResults: Journal[];
@@ -8,11 +8,7 @@ interface SearchResultsProps {
   isError: boolean;
   error: { message: string } | null;
   query: string;
-  totalCount: number;
-  currentPage: number;
-  totalPages: number;
-  goToPreviousPage: () => void;
-  goToNextPage: () => void;
+  paginationProps: PaginationProps;
   onClickListItem: (id: string) => void;
 }
 
@@ -23,11 +19,7 @@ const SearchResults = (props: SearchResultsProps) => {
     isError,
     error,
     query,
-    totalCount,
-    currentPage,
-    totalPages,
-    goToNextPage,
-    goToPreviousPage,
+    paginationProps,
     onClickListItem,
   } = props;
 
@@ -49,11 +41,7 @@ const SearchResults = (props: SearchResultsProps) => {
 
   return (
     <>
-      <div>
-        <CustomLink title='<<< Prev' onClick={goToPreviousPage} />
-        {`Page ${currentPage} of ${totalPages} / (${totalCount}) Total Journal Entries`}
-        <CustomLink title='>>> Next' onClick={goToNextPage} />
-      </div>
+      <Pagination {...paginationProps} />
       <ul style={{ margin: 8 }}>
         {searchResults?.map((result: Journal) => {
           const { _id } = result;

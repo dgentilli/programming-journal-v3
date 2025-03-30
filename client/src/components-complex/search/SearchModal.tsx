@@ -51,6 +51,13 @@ const SearchModal = (props: SearchModalProps) => {
   } = props;
 
   const { searchResults, totalCount, totalPages, currentPage } = data || {};
+  const paginationProps = {
+    totalCount,
+    totalPages,
+    currentPage,
+    goToNextPage,
+    goToPreviousPage,
+  };
 
   return (
     <Modal closeModal={closeModal}>
@@ -67,11 +74,7 @@ const SearchModal = (props: SearchModalProps) => {
         isError={isError}
         error={error}
         query={query}
-        totalCount={totalCount}
-        currentPage={currentPage}
-        totalPages={totalPages}
-        goToNextPage={goToNextPage}
-        goToPreviousPage={goToPreviousPage}
+        paginationProps={paginationProps}
         onClickListItem={onClickListItem}
       />
     </Modal>

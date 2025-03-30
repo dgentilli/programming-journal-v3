@@ -3,8 +3,8 @@ import Button from '../../components-simple/Button';
 import ListItem from '../../components-simple/ListItem';
 import Footer from '../../components-simple/Footer';
 import { Journal } from '../../types/common';
-import CustomLink from '../../components-simple/CustomLink';
 import ScreenWrapper from '../../components-simple/ScreenWrapper';
+import Pagination from '../../components-simple/Pagination';
 
 interface PostsUIProps {
   journals: Journal[] | undefined;
@@ -34,6 +34,15 @@ const PostsUI = (props: PostsUIProps) => {
     onClick,
     createNewEntry,
   } = props;
+
+  const paginationProps = {
+    currentPage,
+    totalCount,
+    totalPages,
+    goToNextPage,
+    goToPreviousPage,
+  };
+
   if (isLoading) {
     return <div>Loading...</div>; // Display loading state
   }
@@ -51,7 +60,7 @@ const PostsUI = (props: PostsUIProps) => {
       <div
         style={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'space-evenly',
           alignItems: 'center',
         }}
       >
@@ -60,11 +69,7 @@ const PostsUI = (props: PostsUIProps) => {
           text='New Journal Entry'
           onClick={createNewEntry}
         />
-        <div>{`Page ${currentPage} of ${totalPages} / (${totalCount}) Total Journal Entries`}</div>
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
-          <CustomLink title='<<< Prev' onClick={goToPreviousPage} />
-          <CustomLink title='>>> Next' onClick={goToNextPage} />
-        </div>
+        <Pagination {...paginationProps} />
       </div>
       <ul>
         {journals?.map((post) => {
