@@ -3,13 +3,26 @@ const app = express();
 require('dotenv').config();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const session = require('express-session');
 
 const journal = require('./api/journal');
 const author = require('./api/author');
 
+const sessionSecret = process.env.SESSION_SECRET;
+const maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days for the session maxAge
+
+/** Register Middlewares */
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+  session({
+    secret: sessionSecret,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge },
+  })
+);
 
 /** API Routes Go Here */
 app.use('/api/journal', journal);
