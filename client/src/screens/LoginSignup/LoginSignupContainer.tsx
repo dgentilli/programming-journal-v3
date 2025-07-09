@@ -7,6 +7,7 @@ const LoginSignupContainer = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    shouldCreateNewAccount: false,
   });
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
