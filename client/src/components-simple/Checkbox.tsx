@@ -1,15 +1,16 @@
-import MUICheckbox from '@mui/joy/Checkbox';
+import MUICheckbox, {
+  CheckboxProps as MUICheckboxProps,
+} from '@mui/joy/Checkbox';
 
-interface CheckboxProps {
+interface CheckboxProps extends Omit<MUICheckboxProps, 'checked' | 'onChange'> {
   isChecked: boolean;
-  label: string;
-  onChange: () => void;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Checkbox = (props: CheckboxProps) => {
-  const { isChecked, label, onChange } = props;
+  const { isChecked, onChange, ...rest } = props;
 
-  return <MUICheckbox checked={isChecked} label={label} onChange={onChange} />;
+  return <MUICheckbox checked={isChecked} onChange={onChange} {...rest} />;
 };
 
 export default Checkbox;

@@ -2,21 +2,18 @@ import Spacer from '../../components-simple/Spacer';
 import TextInput from '../../components-simple/TextInput';
 import Checkbox from '../../components-simple/Checkbox';
 import { baseTokens } from '../../theme/baseTokens';
-
-interface Props {
-  formData: {
-    email: string;
-    password: string;
-    shouldCreateNewAccount: boolean;
-  };
+import { FormData } from './LoginSignupContainer';
+interface LoginSignupProps {
+  formData: FormData;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleFormSubmission: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
-const LoginSignupUI = (props: Props) => {
-  const { formData, handleChange } = props;
+const LoginSignupUI = (props: LoginSignupProps) => {
+  const { formData, handleChange, handleFormSubmission } = props;
 
   return (
-    <>
+    <form onSubmit={handleFormSubmission}>
       <TextInput
         name='email'
         label='Email'
@@ -37,11 +34,29 @@ const LoginSignupUI = (props: Props) => {
       />
       <Spacer height={baseTokens.spacing.xxl} />
       <Checkbox
+        name='shouldCreateNewAccount'
         isChecked={formData.shouldCreateNewAccount}
-        label='I need to create a new account'
-        onChange={() => {}}
+        label='I am creating a new account'
+        onChange={handleChange}
       />
-    </>
+      <Spacer height={baseTokens.spacing.lg} />
+      <div>
+        <input
+          type='submit'
+          value='Submit'
+          style={{
+            height: 50,
+            width: 200,
+            borderRadius: baseTokens.radius.full,
+            backgroundColor: baseTokens.colors.blue100,
+            color: baseTokens.colors.white,
+            fontSize: baseTokens.fontSizes.lg,
+            fontWeight: 600,
+            border: 'none',
+          }}
+        />
+      </div>
+    </form>
   );
 };
 
