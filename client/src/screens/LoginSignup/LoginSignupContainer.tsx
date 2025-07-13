@@ -31,12 +31,22 @@ const LoginSignupContainer = () => {
         );
         console.log('response.data from signup', response?.data);
         navigate('/');
-        return response?.data;
+        const { data } = response || {};
+        const { success } = data;
+        if (!success) {
+          return setError('Signup Failed');
+        } else {
+          const data = await handleLogin(email, password);
+          setUser(data);
+          navigate('/');
+          return data;
+        }
       } catch (error) {
         console.log('error when signing up:', error);
       }
     },
-    [navigate]
+    // ignore exhaustive deps here
+    [navigate, setUser]
   );
 
   const handleLogin = useCallback(
@@ -48,12 +58,11 @@ const LoginSignupContainer = () => {
         );
         console.log('response.data from login', response?.data);
         const { data } = response || {};
-        const { success, token } = data;
+        const { success } = data;
 
         if (!success) {
           return setError('Login Failed');
         } else {
-          localStorage.setItem('token', token);
           setUser(data);
           navigate('/');
           return data;

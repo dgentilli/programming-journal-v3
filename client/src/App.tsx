@@ -10,6 +10,7 @@ function App() {
   const user = useUser();
   const token = user?.token;
   const router = createAppRouter(token);
+
   return (
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
