@@ -5,12 +5,13 @@ import { baseTokens } from '../../theme/baseTokens';
 import { FormData } from './LoginSignupContainer';
 interface LoginSignupProps {
   formData: FormData;
+  error?: string;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleFormSubmission: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const LoginSignupUI = (props: LoginSignupProps) => {
-  const { formData, handleChange, handleFormSubmission } = props;
+  const { formData, error, handleChange, handleFormSubmission } = props;
 
   return (
     <form onSubmit={handleFormSubmission}>
@@ -20,6 +21,7 @@ const LoginSignupUI = (props: LoginSignupProps) => {
         value={formData.email}
         placeholder='Email'
         isRequired
+        errorMessage={error}
         onChange={handleChange}
       />
       <Spacer height={baseTokens.spacing.xxl} />
@@ -30,6 +32,7 @@ const LoginSignupUI = (props: LoginSignupProps) => {
         value={formData.password}
         placeholder='Password'
         isRequired
+        errorMessage={error}
         onChange={handleChange}
       />
       <Spacer height={baseTokens.spacing.xxl} />

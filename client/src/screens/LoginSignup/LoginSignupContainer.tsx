@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LoginSignupUI from './LoginSignupUI';
 import axios from 'axios';
+import { useUserActions } from '../../globalState/userStore';
 
 const MemoizedLoginSignupUI = React.memo(LoginSignupUI);
 
@@ -10,38 +12,59 @@ export type FormData = {
   shouldCreateNewAccount: boolean;
 };
 
-const handleSignup = async (email: string, password: string) => {
-  try {
-    const response = await axios.post(
-      'http://localhost:5000/api/author/signup',
-      { email, password }
-    );
-    console.log('response.data from signup', response?.data);
-    return response?.data;
-  } catch (error) {
-    console.log('error when signing up:', error);
-  }
-};
-
-const handleLogin = async (email: string, password: string) => {
-  try {
-    const response = await axios.post(
-      'http://localhost:5000/api/author/login',
-      { email, password }
-    );
-    console.log('response.data from login', response?.data);
-    return response?.data;
-  } catch (error) {
-    console.log('error when logging in:', error);
-  }
-};
-
 const LoginSignupContainer = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     shouldCreateNewAccount: false,
   });
+  const [error, setError] = useState('');
+  const { setUser } = useUserActions();
+  const navigate = useNavigate();
+
+  const handleSignup = useCallback(
+    async (email: string, password: string) => {
+      try {
+        const response = await axios.post(
+          'http://localhost:5000/api/author/signup',
+          { email, password }
+        );
+        console.log('response.data from signup', response?.data);
+        navigate('/');
+        return response?.data;
+      } catch (error) {
+        console.log('error when signing up:', error);
+      }
+    },
+    [navigate]
+  );
+
+  const handleLogin = useCallback(
+    async (email: string, password: string) => {
+      try {
+        const response = await axios.post(
+          'http://localhost:5000/api/author/login',
+          { email, password }
+        );
+        console.log('response.data from login', response?.data);
+        const { data } = response || {};
+        const { success, token } = data;
+
+        if (!success) {
+          return setError('Login Failed');
+        } else {
+          localStorage.setItem('token', token);
+          setUser(data);
+          navigate('/');
+          return data;
+        }
+      } catch (error) {
+        console.log('error when logging in:', error);
+        setError('Login Failed');
+      }
+    },
+    [navigate, setUser]
+  );
 
   const handleFormSubmission = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -65,6 +88,7 @@ const LoginSignupContainer = () => {
   return (
     <MemoizedLoginSignupUI
       formData={formData}
+      error={error}
       handleChange={handleChange}
       handleFormSubmission={handleFormSubmission}
     />
