@@ -4,7 +4,7 @@ import { devtools, persist } from 'zustand/middleware';
 export type TaskState = 'PLANNED' | 'ONGOING' | 'DONE';
 
 export type User = {
-  _id: string;
+  id: string;
   token?: string;
   email: string;
 };

@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 import PostsUI from './PostsUI';
-import { TEMP_ID, TEMP_TOKEN } from './temp';
+import { useUser } from '../../globalState/userStore';
 
 const MemoizedPostsUI = React.memo(PostsUI);
 
@@ -15,28 +15,31 @@ const fetchJournals = async (
   page = 1,
   limit = 10
 ) => {
-  const response = await axios.get(
-    `http://localhost:5000/api/journal/all/${userId}?page=${page}&limit=${limit}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  return response.data;
+  if (userId && token) {
+    const response = await axios.get(
+      `http://localhost:5000/api/journal/all/${userId}?page=${page}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  }
 };
 
 const PostsContainer = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const LIMIT = 10;
-  // hard code userId and token until you finish the auth
-  const userId = TEMP_ID;
-  const token = TEMP_TOKEN;
+  const user = useUser();
+  const id = user?.id || '';
+  const token = user?.token || '';
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['journals', 'list', userId, page],
-    queryFn: () => fetchJournals(userId, token, page, LIMIT),
+    queryKey: ['journals', 'list', id, page],
+    queryFn: () => fetchJournals(id, token, page, LIMIT),
+    enabled: Boolean(id && token),
     refetchInterval: 300000, // 5 min in ms
   });
 
