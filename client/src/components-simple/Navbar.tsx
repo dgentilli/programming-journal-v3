@@ -3,8 +3,8 @@ import { BaseTokens, baseTokens } from '../theme/baseTokens';
 import CustomLink from './CustomLink';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import SearchModal from '../components-complex/search/SearchModal';
 import SearchContainer from '../components-complex/search/SearchContainer';
+import { useUserActions } from '../globalState/userStore';
 
 const NavWrapper = styled.nav`
   width: 100%;
@@ -30,6 +30,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const closeModal = () => setIsModalOpen(false);
+  const { removeUser } = useUserActions();
+
   return (
     <NavWrapper>
       <List>
@@ -47,6 +49,14 @@ const Navbar = () => {
             color={baseTokens.colors.white}
             fontSize={baseTokens.fontSizes.xxl as keyof BaseTokens['fontSizes']}
             onClick={() => setIsModalOpen(true)}
+          />
+        </ListItem>
+        <ListItem>
+          <CustomLink
+            title='Logout'
+            color={baseTokens.colors.white}
+            fontSize={baseTokens.fontSizes.xxl as keyof BaseTokens['fontSizes']}
+            onClick={() => removeUser()}
           />
         </ListItem>
       </List>
