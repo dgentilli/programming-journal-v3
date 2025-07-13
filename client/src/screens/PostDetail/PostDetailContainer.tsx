@@ -5,16 +5,17 @@ import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 
 import PostDetailUI, { DeleteJournalMutation } from './PostDetailUI';
-import { TEMP_TOKEN } from '../PostsScreen/temp';
 import { Journal } from '../../types/common';
+import { useUser } from '../../globalState/userStore';
 
 const MemoizedPostDetailUI = React.memo(PostDetailUI);
 
 // Define the API fetch function
-const fetchJournalEntry = async (id: string) => {
+const fetchJournalEntry = async (id: string, token?: string) => {
+  if (!token) return;
   const response = await axios.get(`http://localhost:5000/api/journal/${id}`, {
     headers: {
-      Authorization: `Bearer ${TEMP_TOKEN}`,
+      Authorization: `Bearer ${token}`,
     },
   });
   return response.data;
@@ -29,6 +30,8 @@ const deleteJournalEntry = async (id: string) => {
 };
 
 const PostDetailContainer = () => {
+  const user = useUser();
+  const token = user?.token;
   const { id } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const journalId = id || '';
@@ -41,7 +44,7 @@ const PostDetailContainer = () => {
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['journals', 'detail', id],
-    queryFn: () => fetchJournalEntry(journalId),
+    queryFn: () => fetchJournalEntry(journalId, token),
     refetchInterval: 300000, // 5 min in ms
     initialData: () => {
       return queryClient
@@ -57,7 +60,7 @@ const PostDetailContainer = () => {
       navigate('/');
 
       // Invalidate the query cache for the journal list
-
+      //@ts-expect-error fix this later
       queryClient.invalidateQueries(['journals']);
     },
     onError: (error) => {

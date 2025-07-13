@@ -2,13 +2,14 @@ import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import PostCreateUI from './PostCreateUI';
-import { TEMP_ID } from '../PostsScreen/temp';
+import { useUser } from '../../globalState/userStore';
 
 const MemoizedPostCreateUI = React.memo(PostCreateUI);
 
 const PostCreateContainer = () => {
   const navigate = useNavigate();
-  const author = TEMP_ID;
+  const user = useUser();
+  const author = user?.id;
 
   const createJournal = useCallback(
     async (formData: {
@@ -37,7 +38,7 @@ const PostCreateContainer = () => {
 
   return (
     <MemoizedPostCreateUI
-      author={author}
+      author={author || ''}
       goBack={goBack}
       createJournal={createJournal}
       onSuccess={onSuccess}

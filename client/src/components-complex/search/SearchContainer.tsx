@@ -2,15 +2,15 @@ import React, { useCallback, useState } from 'react';
 import SearchModal from './SearchModal';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { TEMP_TOKEN } from '../../screens/PostsScreen/temp';
 import { useQuery } from '@tanstack/react-query';
+import { useUser } from '../../globalState/userStore';
 
 const MemoizedSearchModal = React.memo(SearchModal);
 interface SearchContainerProps {
   closeModal: () => void;
 }
 
-const searchJournals = async (query: string, page: number, token: string) => {
+const searchJournals = async (query: string, page: number, token?: string) => {
   const response = await axios.get(
     `http://localhost:5000/api/journal/search?query=${query}&page=${page}&limit=10`,
     {
@@ -23,7 +23,8 @@ const searchJournals = async (query: string, page: number, token: string) => {
 };
 
 const SearchContainer = (props: SearchContainerProps) => {
-  const token = TEMP_TOKEN;
+  const user = useUser();
+  const token = user?.token;
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
   const { closeModal } = props;

@@ -5,28 +5,33 @@ import { useParams } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { Journal } from '../../types/common';
-import { TEMP_ID, TEMP_TOKEN } from '../PostsScreen/temp';
+import { useUser } from '../../globalState/userStore';
 
 const MemoizedPostEditUI = React.memo(PostEditUI);
 
-const fetchJournalEntry = async (id: string) => {
+const fetchJournalEntry = async (id: string, token?: string) => {
+  if (!token) return;
+
   const response = await axios.get(`http://localhost:5000/api/journal/${id}`, {
     headers: {
-      Authorization: `Bearer ${TEMP_TOKEN}`,
+      Authorization: `Bearer ${token}`,
     },
   });
   return response.data;
 };
 
 const PostEditContainer = () => {
-  const { id } = useParams();
-  const journalId = id || '';
+  const { id: postId } = useParams();
+  const user = useUser();
+  const { id, token } = user || {};
+  const journalId = postId || '';
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['journals', 'detail', id],
-    queryFn: () => fetchJournalEntry(journalId),
+    queryFn: () => fetchJournalEntry(journalId, token),
+    enabled: Boolean(journalId && token),
     refetchInterval: 300000, // 5 min in ms
     initialData: () => {
       return queryClient
@@ -65,7 +70,7 @@ const PostEditContainer = () => {
       tags={tags}
       category={category}
       isLoading={isLoading}
-      author={TEMP_ID}
+      author={id || ''}
       error={error}
       isError={isError}
       onSuccess={onSuccess}
