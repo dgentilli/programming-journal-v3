@@ -5,6 +5,7 @@ import Footer from '../../components-simple/Footer';
 import { Journal } from '../../types/common';
 import ScreenWrapper from '../../components-simple/ScreenWrapper';
 import Pagination from '../../components-simple/Pagination';
+import EmptyScreen from '../../components-simple/EmptyScreen';
 
 interface PostsUIProps {
   journals: Journal[] | undefined;
@@ -44,14 +45,14 @@ const PostsUI = (props: PostsUIProps) => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>; // Display loading state
+    return <EmptyScreen onClick={createNewEntry} />; // Display loading state
   }
 
   if (isError) {
     return <div>Error: {error?.message}</div>; // Display error message
   }
 
-  if (journals?.length === 0) {
+  if (!journals || journals?.length === 0) {
     return <div>No Posts</div>;
   }
 
