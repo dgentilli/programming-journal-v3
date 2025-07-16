@@ -16,7 +16,7 @@ router.get('/test', (req, res) => res.json({ msg: 'Blog API test works!' }));
  * @ GET /api/journal/search?query=searchTerm&page=1&limit=10
  */
 
-router.get('/search', async (req, res) => {
+router.get('/search', authenticateUser, async (req, res) => {
   try {
     const { query, page = 1, limit = 10 } = req.query; // Get query + pagination params
     const pageNumber = Math.max(1, parseInt(page));
@@ -56,7 +56,7 @@ router.get('/search', async (req, res) => {
  * @ POST /api/journal/create
  */
 
-router.post('/create', async (req, res) => {
+router.post('/create', authenticateUser, async (req, res) => {
   try {
     const { title, content, author, tags = [], category = 'Other' } = req.body;
     console.log('req.body', req.body);
@@ -101,7 +101,7 @@ router.get('/all', (req, res) => {
  * Get paginated journal entries for a specific user
  * @ GET /api/journal/all/:author?page=1&limit=10
  */
-router.get('/all/:author', async (req, res) => {
+router.get('/all/:author', authenticateUser, async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
 
   try {
@@ -158,7 +158,7 @@ router.get('/:id', authenticateUser, async (req, res) => {
  *  @ PATCH /api/journal/:id
  */
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', authenticateUser, async (req, res) => {
   try {
     const { title, content, author, tags = [], category = 'Other' } = req.body;
     console.log('req.body', req.body);
@@ -203,7 +203,7 @@ router.put('/:id', async (req, res) => {
  *  @ DELETE /api/journal/:id
  */
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticateUser, async (req, res) => {
   try {
     // find the entry
     const { id } = req.params;
