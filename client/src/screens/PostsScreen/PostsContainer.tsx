@@ -20,7 +20,7 @@ const fetchJournals = async (
       `http://localhost:5000/api/journal/all/${userId}?page=${page}&limit=${limit}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: token,
         },
       }
     );

@@ -14,7 +14,7 @@ const fetchJournalEntry = async (id: string, token?: string) => {
 
   const response = await axios.get(`http://localhost:5000/api/journal/${id}`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: token,
     },
   });
   return response.data;
@@ -49,19 +49,25 @@ const PostEditContainer = () => {
       author: string;
     }) => {
       const response = await axios.put(
-        `http://localhost:5000/api/journal/${id}`,
-        formData
+        `http://localhost:5000/api/journal/${journalId}`,
+        formData,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
       );
       return response.data;
     },
-    [id]
+    [journalId, token]
   );
 
   const onSuccess = () => {
-    navigate(`/detail/${id}`);
+    navigate(`/detail/${journalId}`);
   };
 
   const { title, content, tags, category } = data || {};
+  // console.log('data from post edit', data);
 
   return (
     <MemoizedPostEditUI

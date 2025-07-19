@@ -15,15 +15,20 @@ const fetchJournalEntry = async (id: string, token?: string) => {
   if (!token) return;
   const response = await axios.get(`http://localhost:5000/api/journal/${id}`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: token,
     },
   });
   return response.data;
 };
 
-const deleteJournalEntry = async (id: string) => {
+const deleteJournalEntry = async (id: string, token: string) => {
   const response = await axios.delete(
-    `http://localhost:5000/api/journal/${id}`
+    `http://localhost:5000/api/journal/${id}`,
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
   );
   console.log('response.data from delete', response.data);
   return response.data;
@@ -31,7 +36,7 @@ const deleteJournalEntry = async (id: string) => {
 
 const PostDetailContainer = () => {
   const user = useUser();
-  const token = user?.token;
+  const token = user?.token || '';
   const { id } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const journalId = id || '';
@@ -54,7 +59,7 @@ const PostDetailContainer = () => {
   });
 
   const mutation = useMutation({
-    mutationFn: deleteJournalEntry, // Function to call for deletion
+    mutationFn: () => deleteJournalEntry(journalId, token), // Function to call for deletion
     onSuccess: () => {
       // Navigate to /home after successful deletion
       navigate('/');

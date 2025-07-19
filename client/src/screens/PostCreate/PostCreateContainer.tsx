@@ -21,7 +21,12 @@ const PostCreateContainer = () => {
     }) => {
       const response = await axios.post(
         'http://localhost:5000/api/journal/create',
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: user?.token,
+          },
+        }
       );
       return response.data;
     },

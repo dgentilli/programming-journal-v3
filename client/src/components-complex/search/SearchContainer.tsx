@@ -15,7 +15,7 @@ const searchJournals = async (query: string, page: number, token?: string) => {
     `http://localhost:5000/api/journal/search?query=${query}&page=${page}&limit=10`,
     {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: token,
       },
     }
   );
