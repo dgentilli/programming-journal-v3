@@ -161,9 +161,7 @@ router.get('/:id', authenticateUser, async (req, res) => {
 router.put('/:id', authenticateUser, async (req, res) => {
   try {
     const { title, content, author, tags = [], category = 'Other' } = req.body;
-    console.log('req.body', req.body);
     const { id } = req.params;
-    console.log('req.params.id', id);
 
     // Validate required fields
     if (!title) {

@@ -6,6 +6,7 @@ import { Journal } from '../../types/common';
 import ScreenWrapper from '../../components-simple/ScreenWrapper';
 import Pagination from '../../components-simple/Pagination';
 import EmptyScreen from '../../components-simple/EmptyScreen';
+import { useNavigate } from 'react-router-dom';
 
 interface PostsUIProps {
   journals: Journal[] | undefined;
@@ -35,6 +36,7 @@ const PostsUI = (props: PostsUIProps) => {
     onClick,
     createNewEntry,
   } = props;
+  const navigate = useNavigate();
 
   const paginationProps = {
     currentPage,
@@ -45,15 +47,18 @@ const PostsUI = (props: PostsUIProps) => {
   };
 
   if (isLoading) {
-    return <EmptyScreen onClick={createNewEntry} />; // Display loading state
+    return <div>Loading ...</div>;
   }
 
   if (isError) {
+    if (error?.status === '401') {
+      return navigate('/auth');
+    }
     return <div>Error: {error?.message}</div>; // Display error message
   }
 
   if (!journals || journals?.length === 0) {
-    return <div>No Posts</div>;
+    return <EmptyScreen onClick={createNewEntry} />;
   }
 
   return (

@@ -9,19 +9,9 @@ import { useUser } from '../../globalState/userStore';
 
 const MemoizedPostEditUI = React.memo(PostEditUI);
 
-const fetchJournalEntry = async (id: string, token?: string) => {
-  if (!token) return;
-
-  const response = await axios.get(`http://localhost:5000/api/journal/${id}`, {
-    headers: {
-      Authorization: token,
-    },
-  });
-  return response.data;
-};
-
 const PostEditContainer = () => {
   const { id: postId } = useParams();
+  console.log({ postId });
   const user = useUser();
   const { id, token } = user || {};
   const journalId = postId || '';
@@ -29,16 +19,31 @@ const PostEditContainer = () => {
   const queryClient = useQueryClient();
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['journals', 'detail', id],
+    queryKey: ['journals', 'detail', id, journalId],
     queryFn: () => fetchJournalEntry(journalId, token),
     enabled: Boolean(journalId && token),
-    refetchInterval: 300000, // 5 min in ms
+    // refetchInterval: 300000, // 5 min in ms
     initialData: () => {
       return queryClient
         .getQueryData<Journal[]>(['journals', 'list'])
         ?.find((journal) => journal._id === id);
     },
   });
+  const { title, content, tags, category } = data || {};
+
+  const fetchJournalEntry = async (id: string, token?: string) => {
+    if (!token) return;
+
+    const response = await axios.get(
+      `http://localhost:5000/api/journal/${id}`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    return response.data;
+  };
 
   const editJournal = useCallback(
     async (formData: {
@@ -66,7 +71,6 @@ const PostEditContainer = () => {
     navigate(`/detail/${journalId}`);
   };
 
-  const { title, content, tags, category } = data || {};
   // console.log('data from post edit', data);
 
   return (

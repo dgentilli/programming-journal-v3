@@ -1,11 +1,13 @@
 const jwt = require('jsonwebtoken');
 
 const authenticateUser = async (req, res, next) => {
-  const authHeader = req.headers.authorization;
-
+  const authHeader = req.headers?.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'No token provided' });
   }
+
+  // The error is coming from the block above
+  // so i'm not properly extracting the token from the req headers
 
   const token = authHeader.split(' ')[1]; // Extract the token
 

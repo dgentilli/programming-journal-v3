@@ -32,9 +32,9 @@ const LoginSignupContainer = () => {
         console.log('response.data from signup', response?.data);
         navigate('/');
         const { data } = response || {};
-        const { success } = data;
+        const { success, msg } = data;
         if (!success) {
-          return setError('Signup Failed');
+          return setError(msg || 'Signup Failed');
         } else {
           const data = await handleLogin(email, password);
           setUser(data);
@@ -42,7 +42,7 @@ const LoginSignupContainer = () => {
           return data;
         }
       } catch (error) {
-        setError('Signup failed');
+        setError(error.message || 'Signup failed');
         console.log('error when signing up:', error);
       }
     },
@@ -59,10 +59,10 @@ const LoginSignupContainer = () => {
         );
         console.log('response.data from login', response?.data);
         const { data } = response || {};
-        const { success } = data;
+        const { success, msg } = data;
 
         if (!success) {
-          return setError('Login Failed');
+          return setError(msg || 'Login Failed');
         } else {
           setUser(data);
           navigate('/');
@@ -70,7 +70,7 @@ const LoginSignupContainer = () => {
         }
       } catch (error) {
         console.log('error when logging in:', error);
-        setError('Login Failed');
+        setError(error.message || 'Login Failed');
       }
     },
     [navigate, setUser]
