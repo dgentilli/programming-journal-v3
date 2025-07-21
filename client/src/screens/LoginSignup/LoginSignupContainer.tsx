@@ -42,6 +42,7 @@ const LoginSignupContainer = () => {
           return data;
         }
       } catch (error) {
+        setError('Signup failed');
         console.log('error when signing up:', error);
       }
     },
