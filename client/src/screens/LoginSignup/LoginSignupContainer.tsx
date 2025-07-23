@@ -42,7 +42,7 @@ const LoginSignupContainer = () => {
           return data;
         }
       } catch (error) {
-        setError(error.message || 'Signup failed');
+        setError(error?.response?.data?.msg || 'Signup failed');
         console.log('error when signing up:', error);
       }
     },
@@ -70,7 +70,7 @@ const LoginSignupContainer = () => {
         }
       } catch (error) {
         console.log('error when logging in:', error);
-        setError(error.message || 'Login Failed');
+        setError(error?.response?.data?.msg || 'Login Failed');
       }
     },
     [navigate, setUser]
@@ -86,14 +86,21 @@ const LoginSignupContainer = () => {
       : handleLogin(email, password);
   };
 
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value, type, checked } = e.target;
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
-  }, []);
+      if (error) {
+        setError('');
+      }
+
+      setFormData((prev) => ({
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value,
+      }));
+    },
+    [error]
+  );
 
   return (
     <MemoizedLoginSignupUI
