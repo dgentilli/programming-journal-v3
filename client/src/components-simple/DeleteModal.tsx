@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { baseTokens } from '../theme/baseTokens';
 import Button from './Button';
-import { ButtonType } from '../../constants/enums';
+import { ButtonColor } from '../../constants/enums';
 import Spacer from './Spacer';
 import { DeleteJournalMutation } from '../screens/PostDetail/PostDetailUI';
 import Modal from './Modal';
@@ -33,10 +33,11 @@ const DeleteModal = (props: DeleteModalProps) => {
       <Spacer height={baseTokens.spacing.xl} />
       <ButtonWrapper>
         <Button
-          type={ButtonType.DANGER}
+          color={ButtonColor.DANGER}
           text='Delete this entry'
           //@ts-expect-error resolve this later
           onClick={onDelete}
+          variant='outlined'
         />
         <div
           style={{
@@ -46,7 +47,7 @@ const DeleteModal = (props: DeleteModalProps) => {
           }}
         />
         <Button
-          type={ButtonType.SECONDARY}
+          color={ButtonColor.SECONDARY}
           text='Keep this!'
           onClick={closeModal}
         />

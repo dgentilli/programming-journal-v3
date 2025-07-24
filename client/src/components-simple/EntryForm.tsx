@@ -1,6 +1,7 @@
 import {
   ChangeEvent,
   FormEvent,
+  useEffect,
   useLayoutEffect,
   useRef,
   useState,
@@ -8,7 +9,7 @@ import {
 import styled from 'styled-components';
 import Button from './Button';
 import { baseTokens } from '../theme/baseTokens';
-import { ButtonType } from '../../constants/enums';
+import { ButtonColor } from '../../constants/enums';
 import { EntryFormProps } from '../types/common';
 import Spacer from './Spacer';
 import { useMutation } from '@tanstack/react-query';
@@ -98,8 +99,12 @@ const EntryForm = (props: EntryFormProps) => {
   const [tagTextInput, setTagTextInput] = useState('');
   const [tags, setTags] = useState(tagsArray || []);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-
+  useEffect(() => {
+    console.log('EntryForm Mounts');
+  }, [bodyText, titleText, categoryText, tagsArray]);
+  console.log('titleText recd by entry form', titleText);
   const mutation = useMutation({
+    //@ts-expect-error fix this later, smt wrong with type safety here
     mutationFn: ({ title, content, category, tags, author }) => {
       return onSubmit({ title, content, category, tags, author });
     },
@@ -145,7 +150,7 @@ const EntryForm = (props: EntryFormProps) => {
   };
 
   const isDisabled =
-    mutation.isPending || title.length === 0 || body.length === 0;
+    mutation.isPending || title?.length === 0 || body?.length === 0;
 
   useLayoutEffect(() => {
     const adjustHeight = () => {
@@ -176,7 +181,7 @@ const EntryForm = (props: EntryFormProps) => {
         {mutation.isPending && <div>Submitting....</div>}
         {mutation.isError && <div>Error!!!</div>}
         <PageHeader>
-          {titleText.length > 0
+          {titleText?.length > 0
             ? 'Edit Your Journal Entry'
             : 'Create a Journal Entry'}
         </PageHeader>
@@ -227,9 +232,9 @@ const EntryForm = (props: EntryFormProps) => {
           </Row>
           <Spacer height={baseTokens.spacing.md} />
           <Button
-            type={ButtonType.SUBMIT}
+            type={ButtonColor.SUBMIT}
             text={isSubmitting ? 'Submitting...' : 'Submit'}
-            isDisabled={isDisabled}
+            disabled={isDisabled}
             onClick={() => {}}
           />
         </FormWrapper>

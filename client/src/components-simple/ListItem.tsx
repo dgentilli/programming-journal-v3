@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { baseTokens } from '../theme/baseTokens';
 import Button from './Button';
-import { ButtonType } from '../../constants/enums';
+import { ButtonColor } from '../../constants/enums';
 
 const Wrapper = styled.li`
   padding: ${baseTokens.spacing.md};
@@ -48,7 +48,7 @@ const ListItem = (props: ListItemProps) => {
       <Title>{title}</Title>
       <Date>{formattedDate}</Date>
       <Text>{content}</Text>
-      <Button type={ButtonType.INFO} text='Read More' onClick={onClick} />
+      <Button color={ButtonColor.INFO} text='Read More' onClick={onClick} />
     </Wrapper>
   );
 };

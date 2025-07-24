@@ -5,7 +5,7 @@ export enum Routes {
   POST_EDIT = 'Edit Your Post',
 }
 
-export enum ButtonType {
+export enum ButtonColor {
   SUBMIT = 'submit',
   INFO = 'info',
   SECONDARY = 'secondary',

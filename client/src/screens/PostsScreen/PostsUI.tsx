@@ -1,4 +1,4 @@
-import { ButtonType } from '../../../constants/enums';
+import { ButtonColor } from '../../../constants/enums';
 import Button from '../../components-simple/Button';
 import ListItem from '../../components-simple/ListItem';
 import Footer from '../../components-simple/Footer';
@@ -71,7 +71,7 @@ const PostsUI = (props: PostsUIProps) => {
         }}
       >
         <Button
-          type={ButtonType.INFO}
+          color={ButtonColor.INFO}
           text='New Journal Entry'
           onClick={createNewEntry}
         />
@@ -87,17 +87,21 @@ const PostsUI = (props: PostsUIProps) => {
         })}
       </ul>
       <Footer>
-        <Button type={ButtonType.INFO} text='Next >>>' onClick={goToNextPage} />
+        <Button
+          color={ButtonColor.INFO}
+          text='Next >>>'
+          onClick={goToNextPage}
+        />
         <div style={{ marginLeft: '36px' }}>
           <Button
-            type={ButtonType.INFO}
+            color={ButtonColor.INFO}
             text='New Journal Entry'
             onClick={createNewEntry}
           />
         </div>
 
         <Button
-          type={ButtonType.INFO}
+          color={ButtonColor.INFO}
           text='<<< Prev'
           onClick={goToPreviousPage}
         />
