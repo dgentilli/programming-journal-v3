@@ -56,7 +56,10 @@ const Navbar = () => {
             title='Logout'
             color={baseTokens.colors.white}
             fontSize={baseTokens.fontSizes.xxl as keyof BaseTokens['fontSizes']}
-            onClick={() => removeUser()}
+            onClick={() => {
+              removeUser();
+              navigate('/');
+            }}
           />
         </ListItem>
       </List>
