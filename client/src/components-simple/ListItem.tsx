@@ -21,6 +21,10 @@ const Text = styled.p`
   color: ${baseTokens.colors.gray300};
   line-height: 1.7;
   text-align: left;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
 `;
 
 const Date = styled.p`
