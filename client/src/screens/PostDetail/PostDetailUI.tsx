@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { baseTokens } from '../../theme/baseTokens';
+import { BaseTokens, baseTokens } from '../../theme/baseTokens';
 import Button from '../../components-simple/Button';
 import TagWrapper from '../../components-simple/TagWrapper';
 import DeleteModal from '../../components-simple/DeleteModal';
@@ -9,6 +9,7 @@ import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import ScreenWrapper from '../../components-simple/ScreenWrapper';
 import DateDisplay from '../../components-simple/DateDisplay';
+import CustomLink from '../../components-simple/CustomLink';
 
 type DeleteResponse = { message: string }; // Adjust this to match your actual response shape
 
@@ -34,6 +35,7 @@ interface JournalDetailProps {
   closeModal: () => void;
   openModal: () => void;
   onClickEdit: () => void;
+  goBack: () => void;
 }
 
 const TextWrapper = styled.div`
@@ -89,6 +91,7 @@ const PostDetailUI = (props: JournalDetailProps) => {
     date,
     closeModal,
     openModal,
+    goBack,
   } = props;
 
   if (isLoading) {
@@ -110,6 +113,12 @@ const PostDetailUI = (props: JournalDetailProps) => {
           closeModal={closeModal}
         />
       )}
+      <CustomLink
+        title={'Go Back'}
+        color={baseTokens.colors.blue700}
+        fontSize={baseTokens.fontSizes.lg as keyof BaseTokens['fontSizes']}
+        onClick={goBack}
+      />
       <Row>
         <CategoryText>Category: {category}</CategoryText>
       </Row>

@@ -47,6 +47,10 @@ const PostDetailContainer = () => {
     navigate(`/edit/${id}`);
   }, [id, navigate]);
 
+  const goBack = useCallback(() => {
+    window.history.back();
+  }, []);
+
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['journals', 'detail', id],
     queryFn: () => fetchJournalEntry(journalId, token),
@@ -98,6 +102,7 @@ const PostDetailContainer = () => {
       onClickEdit={goToEditPage}
       openModal={openModal}
       closeModal={closeModal}
+      goBack={goBack}
     />
   );
 };
