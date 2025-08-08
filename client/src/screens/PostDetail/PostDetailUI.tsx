@@ -8,6 +8,7 @@ import { ButtonColor } from '../../../constants/enums';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import ScreenWrapper from '../../components-simple/ScreenWrapper';
+import DateDisplay from '../../components-simple/DateDisplay';
 
 type DeleteResponse = { message: string }; // Adjust this to match your actual response shape
 
@@ -29,15 +30,11 @@ interface JournalDetailProps {
   error: { message: string } | null;
   isModalOpen: boolean;
   mutation: DeleteJournalMutation;
-  onClickDelete: (id: string) => void;
+  date: string;
   closeModal: () => void;
   openModal: () => void;
+  onClickEdit: () => void;
 }
-
-const Wrapper = styled.div`
-  margin: 0 auto;
-  max-width: 900px;
-`;
 
 const TextWrapper = styled.div`
   padding: ${baseTokens.spacing.xl};
@@ -89,6 +86,7 @@ const PostDetailUI = (props: JournalDetailProps) => {
     isModalOpen,
     mutation,
     onClickEdit,
+    date,
     closeModal,
     openModal,
   } = props;
@@ -117,6 +115,10 @@ const PostDetailUI = (props: JournalDetailProps) => {
       </Row>
       <Row>
         <TagWrapper tags={tags} />
+      </Row>
+      <Spacer height={baseTokens.spacing.md} />
+      <Row>
+        <DateDisplay dateString={date} format='EEEE, MMMM do, yyyy' />
       </Row>
       <Spacer height={baseTokens.spacing.md} />
       <TextWrapper>

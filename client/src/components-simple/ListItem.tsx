@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 import { baseTokens } from '../theme/baseTokens';
 import Button from './Button';
 import { ButtonColor } from '../../constants/enums';
+import DateDisplay from './DateDisplay';
 
 const Wrapper = styled.li`
   padding: ${baseTokens.spacing.md};
@@ -27,11 +28,6 @@ const Text = styled.p`
   overflow: hidden;
 `;
 
-const Date = styled.p`
-  font-size: ${baseTokens.fontSizes.sm};
-  color: ${baseTokens.colors.blue100};
-`;
-
 export interface ListItemProps {
   postData: {
     title: string;
@@ -45,12 +41,11 @@ export interface ListItemProps {
 const ListItem = (props: ListItemProps) => {
   const { postData, onClick } = props;
   const { title, content, createdAt } = postData;
-  const formattedDate = createdAt.toLocaleString();
 
   return (
     <Wrapper>
       <Title>{title}</Title>
-      <Date>{formattedDate}</Date>
+      <DateDisplay dateString={createdAt} format='EEEE, MMMM do, yyyy' />
       <Text>{content}</Text>
       <Button color={ButtonColor.INFO} text='Read More' onClick={onClick} />
     </Wrapper>

@@ -80,7 +80,7 @@ const PostDetailContainer = () => {
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
   }, []);
-  const { title, content, tags, category } = data || {};
+  const { title, content, tags, category, createdAt } = data || {};
 
   return (
     <MemoizedPostDetailUI
@@ -93,6 +93,7 @@ const PostDetailContainer = () => {
       isError={isError}
       error={error}
       isModalOpen={isModalOpen}
+      date={createdAt}
       mutation={mutation as DeleteJournalMutation}
       onClickEdit={goToEditPage}
       openModal={openModal}
