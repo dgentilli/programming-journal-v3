@@ -89,8 +89,8 @@ const PostsUI = (props: PostsUIProps) => {
       <Footer>
         <Button
           color={ButtonColor.INFO}
-          text='Next >>>'
-          onClick={goToNextPage}
+          text='<<< Prev'
+          onClick={goToPreviousPage}
         />
         <div style={{ marginLeft: '36px' }}>
           <Button
@@ -102,8 +102,8 @@ const PostsUI = (props: PostsUIProps) => {
 
         <Button
           color={ButtonColor.INFO}
-          text='<<< Prev'
-          onClick={goToPreviousPage}
+          text='Next >>>'
+          onClick={goToNextPage}
         />
       </Footer>
     </ScreenWrapper>
