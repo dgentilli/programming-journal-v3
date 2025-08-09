@@ -93,16 +93,20 @@ const EntryForm = (props: EntryFormProps) => {
     onSubmit,
     onSuccess,
   } = props;
-  const [title, setTitle] = useState(titleText);
-  const [body, setBody] = useState(bodyText);
-  const [category, setCategory] = useState(categoryText);
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
+  const [category, setCategory] = useState('');
   const [tagTextInput, setTagTextInput] = useState('');
-  const [tags, setTags] = useState(tagsArray || []);
+  const [tags, setTags] = useState<string[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
   useEffect(() => {
-    console.log('EntryForm Mounts');
-  }, [bodyText, titleText, categoryText, tagsArray]);
-  console.log('titleText recd by entry form', titleText);
+    if (titleText !== undefined) setTitle(titleText);
+    if (bodyText !== undefined) setBody(bodyText);
+    if (categoryText !== undefined) setCategory(categoryText);
+    if (tagsArray !== undefined) setTags(tagsArray);
+  }, [titleText, bodyText, categoryText, tagsArray]);
+
   const mutation = useMutation({
     //@ts-expect-error fix this later, smt wrong with type safety here
     mutationFn: ({ title, content, category, tags, author }) => {

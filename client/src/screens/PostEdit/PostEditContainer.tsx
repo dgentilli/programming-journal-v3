@@ -2,37 +2,29 @@ import React, { useCallback } from 'react';
 import PostEditUI from './PostEditUI';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { Journal } from '../../types/common';
 import { useUser } from '../../globalState/userStore';
 
 const MemoizedPostEditUI = React.memo(PostEditUI);
 
 const PostEditContainer = () => {
   const { id: postId } = useParams();
-  console.log({ postId });
   const user = useUser();
   const { id, token } = user || {};
   const journalId = postId || '';
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['journals', 'detail', id, journalId],
     queryFn: () => fetchJournalEntry(journalId, token),
     enabled: Boolean(journalId && token),
-    // refetchInterval: 300000, // 5 min in ms
-    initialData: () => {
-      return queryClient
-        .getQueryData<Journal[]>(['journals', 'list'])
-        ?.find((journal) => journal._id === id);
-    },
   });
+
   const { title, content, tags, category } = data || {};
 
   const fetchJournalEntry = async (id: string, token?: string) => {
-    if (!token) return;
+    if (!token || !id) return;
 
     const response = await axios.get(
       `http://localhost:5000/api/journal/${id}`,
@@ -42,7 +34,7 @@ const PostEditContainer = () => {
         },
       }
     );
-    return response.data;
+    return response?.data;
   };
 
   const editJournal = useCallback(
@@ -70,8 +62,6 @@ const PostEditContainer = () => {
   const onSuccess = () => {
     navigate(`/detail/${journalId}`);
   };
-
-  // console.log('data from post edit', data);
 
   return (
     <MemoizedPostEditUI

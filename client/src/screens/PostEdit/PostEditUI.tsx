@@ -30,7 +30,6 @@ const PostEditUI = (props: JournalEditProps) => {
     onSubmit,
     onSuccess,
   } = props;
-
   return (
     <EntryForm
       titleText={title}
