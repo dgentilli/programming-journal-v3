@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { BaseTokens, baseTokens } from '../theme/baseTokens';
 import CustomLink from './CustomLink';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SearchContainer from '../components-complex/search/SearchContainer';
 import { useUserActions } from '../globalState/userStore';
 
@@ -31,6 +31,21 @@ const Navbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const closeModal = () => setIsModalOpen(false);
   const { removeUser } = useUserActions();
+
+  useEffect(() => {
+    if (isModalOpen) {
+      // Prevent background scrolling
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Restore scrolling
+      document.body.style.overflow = 'unset';
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isModalOpen]);
 
   return (
     <NavWrapper>

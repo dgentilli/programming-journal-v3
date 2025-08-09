@@ -34,6 +34,7 @@ const Overlay = styled.div`
   align-items: center;
   justify-content: center;
   animation: ${fadeIn} 0.3s ease;
+  z-index: 2;
 `;
 
 const Wrapper = styled.div`
@@ -45,6 +46,7 @@ const Wrapper = styled.div`
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   animation: ${slideIn} 0.3s ease;
   overflow-y: auto;
+  z-index: 3;
 `;
 
 interface SearchModalProps {

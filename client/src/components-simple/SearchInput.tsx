@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { baseTokens } from '../theme/baseTokens';
+import { useEffect, useRef } from 'react';
 
 const SearchInputUI = styled.input`
   flex: 2;
@@ -15,6 +16,13 @@ interface SearchInputProps {
 
 const SearchInput = (props: SearchInputProps) => {
   const { value, onChange } = props;
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputRef?.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   return (
     <SearchInputUI
@@ -25,6 +33,7 @@ const SearchInput = (props: SearchInputProps) => {
       value={value}
       spellCheck={true}
       onChange={(event) => onChange(event.target.value)}
+      ref={inputRef}
     />
   );
 };
