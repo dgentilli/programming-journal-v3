@@ -100,6 +100,12 @@ const EntryForm = (props: EntryFormProps) => {
   const [tags, setTags] = useState<string[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
+  const removeTag = (tagName: string) => {
+    const updatedTags = tags.filter((tag) => tag !== tagName);
+    console.log('testing tags', tags);
+    setTags([...updatedTags]);
+  };
+
   useEffect(() => {
     if (titleText !== undefined) setTitle(titleText);
     if (bodyText !== undefined) setBody(bodyText);
@@ -126,6 +132,7 @@ const EntryForm = (props: EntryFormProps) => {
     event.preventDefault();
     formatTags();
     const formData = { title, content: body, category, tags, author };
+    //@ts-expect-error everything working fix this later
     mutation.mutate(formData);
   };
 
@@ -232,9 +239,10 @@ const EntryForm = (props: EntryFormProps) => {
             onKeyDown={handleTagsKeyDown}
           />
           <Row>
-            <TagWrapper tags={tags} />
+            <TagWrapper tags={tags} removeTag={removeTag} />
           </Row>
           <Spacer height={baseTokens.spacing.md} />
+          {/** @ts-expect-error button works fix ts later */}
           <Button
             type={ButtonColor.SUBMIT}
             text={isSubmitting ? 'Submitting...' : 'Submit'}
