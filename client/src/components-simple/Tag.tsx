@@ -6,18 +6,19 @@ type ButtonProps = {
 };
 
 const TagWrapper = styled.div`
-  padding: ${baseTokens.spacing.sm};
+  padding-left: ${baseTokens.spacing.sm};
   background-color: ${baseTokens.colors.blue100};
   color: ${baseTokens.colors.white};
   border-radius: ${baseTokens.radius.sm};
+  display: flex;
+  align-items: center;
 `;
 
 const DeleteButton = styled.button<ButtonProps>`
-  height: 4;
-  width: 4;
   border-radius: 50%;
   background-color: ${baseTokens.colors.blue100};
   color: ${baseTokens.colors.white};
+  border: none;
 `;
 
 interface TagProps {

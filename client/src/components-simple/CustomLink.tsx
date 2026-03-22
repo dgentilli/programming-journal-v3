@@ -10,6 +10,7 @@ const ButtonLink = styled.button<StyleProps>`
   color: ${(props) => props.color || baseTokens.colors.blue100};
   font-size: ${(props) => props.fontSize || baseTokens.fontSizes.lg};
   background-color: transparent;
+  border: none;
 `;
 
 interface LinkProps {

@@ -51,6 +51,7 @@ const SearchResults = (props: SearchResultsProps) => {
           );
         })}
       </ul>
+      <Pagination {...paginationProps} />
     </>
   );
 };
