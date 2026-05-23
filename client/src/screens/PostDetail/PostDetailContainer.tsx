@@ -30,7 +30,6 @@ const deleteJournalEntry = async (id: string, token: string) => {
       },
     }
   );
-  console.log('response.data from delete', response.data);
   return response.data;
 };
 

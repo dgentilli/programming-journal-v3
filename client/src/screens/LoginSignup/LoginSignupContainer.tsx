@@ -29,7 +29,6 @@ const LoginSignupContainer = () => {
           'http://localhost:5000/api/author/signup',
           { email, password }
         );
-        console.log('response.data from signup', response?.data);
         navigate('/');
         const { data } = response || {};
         const { success, msg } = data;
@@ -57,7 +56,6 @@ const LoginSignupContainer = () => {
           'http://localhost:5000/api/author/login',
           { email, password }
         );
-        console.log('response.data from login', response?.data);
         const { data } = response || {};
         const { success, msg } = data;
 
@@ -78,7 +76,6 @@ const LoginSignupContainer = () => {
 
   const handleFormSubmission = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('formData recd', formData);
     const { email, password, shouldCreateNewAccount } = formData;
 
     return shouldCreateNewAccount

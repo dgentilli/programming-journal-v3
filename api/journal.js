@@ -59,7 +59,6 @@ router.get('/search', authenticateUser, async (req, res) => {
 router.post('/create', authenticateUser, async (req, res) => {
   try {
     const { title, content, author, tags = [], category = 'Other' } = req.body;
-    console.log('req.body', req.body);
 
     // Validate required fields
     if (!title) {

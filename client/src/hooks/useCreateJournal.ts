@@ -8,12 +8,10 @@ const createJournal = async (formData: {
   tags: string[];
   author: string;
 }) => {
-  console.log('formData recd as prop by createJournal', formData);
   const response = await axios.post(
     'http://localhost:5000/api/journal/create',
     formData
   );
-  console.log('response.data from createJournal', response.data);
   return response.data;
 };
 

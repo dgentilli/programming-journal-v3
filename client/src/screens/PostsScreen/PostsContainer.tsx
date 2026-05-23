@@ -6,6 +6,7 @@ import axios from 'axios';
 import PostsUI from './PostsUI';
 import { useUser } from '../../globalState/userStore';
 
+//@ts-expect-error check this later, smt wrong with type safety here
 const MemoizedPostsUI = React.memo(PostsUI);
 
 // Define the API fetch function
@@ -42,6 +43,8 @@ const PostsContainer = () => {
     enabled: Boolean(id && token),
     refetchInterval: 300000, // 5 min in ms
   });
+
+  console.log('error ###', error);
 
   const { currentPage, totalPages, totalCount, journals } = data || {};
 
