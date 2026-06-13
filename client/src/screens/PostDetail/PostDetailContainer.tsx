@@ -113,8 +113,9 @@ const PostDetailContainer = () => {
   }, [id, navigate]);
 
   const goBack = useCallback(() => {
-    window.history.back();
-  }, []);
+    // window.history.back();
+    navigate('/');
+  }, [navigate]);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['journals', 'detail', id],

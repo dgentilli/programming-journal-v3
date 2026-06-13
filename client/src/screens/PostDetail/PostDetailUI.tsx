@@ -112,7 +112,7 @@ const PostDetailUI = (props: JournalDetailProps) => {
   }
 
   return (
-    <ScreenWrapper screenTitle={`${title}`}>
+    <ScreenWrapper>
       {isModalOpen && (
         <DeleteModal
           //@ts-expect-error disregard

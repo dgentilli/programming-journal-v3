@@ -9,7 +9,7 @@ const Wrapper = styled.div`
 `;
 
 interface ScreenWrapperProps {
-  screenTitle: string;
+  screenTitle?: string;
   children: ReactNode | ReactNode[];
 }
 
@@ -18,9 +18,7 @@ const ScreenWrapper = (props: ScreenWrapperProps) => {
   return (
     <Wrapper>
       <Navbar />
-      <header>
-        <h1>{screenTitle}</h1>
-      </header>
+      <header>{screenTitle ? <h1>{screenTitle}</h1> : undefined}</header>
       <Spacer height='50px' />
       {children}
     </Wrapper>
