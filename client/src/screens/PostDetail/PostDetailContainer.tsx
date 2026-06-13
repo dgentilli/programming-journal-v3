@@ -105,6 +105,17 @@ const PostDetailContainer = () => {
           {children}
         </li>
       ),
+      code: ({ children }: { children?: ReactNode }) => (
+        <div
+          style={{
+            backgroundColor: '#eee',
+            padding: '12px',
+            borderRadius: '8px',
+          }}
+        >
+          {children}
+        </div>
+      ),
     };
   }, []);
 
