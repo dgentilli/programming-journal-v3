@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
@@ -28,10 +28,27 @@ const deleteJournalEntry = async (id: string, token: string) => {
       headers: {
         Authorization: token,
       },
-    }
+    },
   );
   return response.data;
 };
+
+const allowedMarkdownElements = [
+  'p', // Paragraphs
+  'br', // Line breaks
+  'strong', // Bold text
+  'em', // Italics
+  'code', // Inline code
+  'pre', // Code blocks
+  'a', // Links
+  'h1',
+  'h2',
+  'h3', // Headers
+  'ul',
+  'ol',
+  'li', // Bullet and numbered lists
+  'blockquote', // Code block quotes
+];
 
 const PostDetailContainer = () => {
   const user = useUser();
@@ -41,6 +58,55 @@ const PostDetailContainer = () => {
   const journalId = id || '';
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  const renderMap = useMemo(() => {
+    return {
+      a: ({ href, children }: { href?: string; children?: ReactNode }) => (
+        <a
+          href={href}
+          target='_blank'
+          rel='noopener noreferrer'
+          style={{ color: '#0066cc' }}
+        >
+          {children}
+        </a>
+      ),
+      blockquote: ({ children }: { children?: ReactNode }) => (
+        <blockquote
+          style={{
+            borderLeft: '4px solid #ccc',
+            paddingLeft: '16px',
+            fontStyle: 'italic',
+          }}
+        >
+          {children}
+        </blockquote>
+      ),
+      ul: ({ children }: { children?: ReactNode }) => (
+        <ul
+          style={{
+            listStyleType: 'disc', // Forces the classic bullet dot to show up
+            paddingLeft: '24px', // Indents the list so it doesn't flush left
+            margin: '12px 0', // Adds space above and below the list
+            textAlign: 'left',
+          }}
+        >
+          {children}
+        </ul>
+      ),
+      li: ({ children }: { children?: ReactNode }) => (
+        <li
+          style={{
+            listStyle: 'initial',
+            marginBottom: '6px', // Adds breathing room between list items
+            textAlign: 'left',
+          }}
+        >
+          {children}
+        </li>
+      ),
+    };
+  }, []);
 
   const goToEditPage = useCallback(() => {
     navigate(`/edit/${id}`);
@@ -62,7 +128,7 @@ const PostDetailContainer = () => {
   });
 
   const mutation = useMutation({
-    mutationFn: () => deleteJournalEntry(journalId, token), // Function to call for deletion
+    mutationFn: (id: string) => deleteJournalEntry(id, token), // Function to call for deletion
     onSuccess: () => {
       // Navigate to /home after successful deletion
       navigate('/');
@@ -97,6 +163,8 @@ const PostDetailContainer = () => {
       error={error}
       isModalOpen={isModalOpen}
       date={createdAt}
+      renderMap={renderMap}
+      allowedMarkdownElements={allowedMarkdownElements}
       mutation={mutation as DeleteJournalMutation}
       onClickEdit={goToEditPage}
       openModal={openModal}

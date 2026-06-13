@@ -4,7 +4,7 @@ import Tag from './Tag';
 
 interface TagWrapperProps {
   tags: string[];
-  removeTag: (tagName: string) => void;
+  removeTag?: (tagName: string) => void;
 }
 
 const EmptyMessage = styled.p`

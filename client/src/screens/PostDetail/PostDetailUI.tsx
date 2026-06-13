@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import ReactMarkdown, { Components } from 'react-markdown';
 import { BaseTokens, baseTokens } from '../../theme/baseTokens';
 import Button from '../../components-simple/Button';
 import TagWrapper from '../../components-simple/TagWrapper';
@@ -14,6 +15,12 @@ import CustomLink from '../../components-simple/CustomLink';
 type DeleteResponse = { message: string }; // Adjust this to match your actual response shape
 
 // UseMutationResult Type
+// export type DeleteJournalMutation = UseMutationResult<
+//   DeleteResponse, // TData (API response type)
+//   AxiosError, // TError (error type)
+//   string // TVariables (argument passed to mutationFn, in this case, the id)
+// >;
+
 export type DeleteJournalMutation = UseMutationResult<
   DeleteResponse, // TData (API response type)
   AxiosError, // TError (error type)
@@ -30,6 +37,8 @@ interface JournalDetailProps {
   isError: boolean;
   error: { message: string } | null;
   isModalOpen: boolean;
+  renderMap: Components;
+  allowedMarkdownElements: string[];
   mutation: DeleteJournalMutation;
   date: string;
   closeModal: () => void;
@@ -42,17 +51,15 @@ const TextWrapper = styled.div`
   padding: ${baseTokens.spacing.xl};
   border: 1px solid ${baseTokens.colors.gray100};
   border-radius: ${baseTokens.radius.md};
+  text-align: left;
+`;
+
+const TitleWrapper = styled.div`
+  padding: ${baseTokens.spacing.xl};
 `;
 
 const TitleText = styled.h3`
   color: ${baseTokens.colors.blue500};
-`;
-
-const BodyText = styled.p`
-  color: ${baseTokens.colors.gray300};
-  text-align: left;
-  line-height: 1.8;
-  font-size: ${baseTokens.fontSizes.lg};
 `;
 
 const ButtonWrapper = styled.div`
@@ -87,6 +94,8 @@ const PostDetailUI = (props: JournalDetailProps) => {
     error,
     isModalOpen,
     mutation,
+    renderMap,
+    allowedMarkdownElements,
     onClickEdit,
     date,
     closeModal,
@@ -106,6 +115,7 @@ const PostDetailUI = (props: JournalDetailProps) => {
     <ScreenWrapper screenTitle={`${title}`}>
       {isModalOpen && (
         <DeleteModal
+          //@ts-expect-error disregard
           onDelete={() => {
             mutation.mutate(id);
             closeModal();
@@ -130,9 +140,15 @@ const PostDetailUI = (props: JournalDetailProps) => {
         <DateDisplay dateString={date} format='EEEE, MMMM do, yyyy' />
       </Row>
       <Spacer height={baseTokens.spacing.md} />
-      <TextWrapper>
+      <TitleWrapper>
         <TitleText>{title}</TitleText>
-        <BodyText>{content}</BodyText>
+      </TitleWrapper>
+      <TextWrapper>
+        <ReactMarkdown
+          children={content}
+          components={renderMap}
+          allowedElements={allowedMarkdownElements}
+        />
       </TextWrapper>
       <ButtonWrapper>
         <Button

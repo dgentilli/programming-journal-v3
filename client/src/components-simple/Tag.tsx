@@ -21,9 +21,13 @@ const DeleteButton = styled.button<ButtonProps>`
   border: none;
 `;
 
+const HorizontalSpacer = styled.div`
+  padding: ${baseTokens.spacing.sm};
+`;
+
 interface TagProps {
   tagText: string;
-  removeTag: (tagName: string) => void;
+  removeTag?: (tagName: string) => void;
 }
 
 const Tag = (props: TagProps) => {
@@ -32,7 +36,11 @@ const Tag = (props: TagProps) => {
   return (
     <TagWrapper key={tagText}>
       {tagText}
-      <DeleteButton onClick={() => removeTag(tagText)}>X</DeleteButton>
+      {removeTag ? (
+        <DeleteButton onClick={() => removeTag(tagText)}>X</DeleteButton>
+      ) : (
+        <HorizontalSpacer />
+      )}
     </TagWrapper>
   );
 };
