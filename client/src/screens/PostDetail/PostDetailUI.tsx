@@ -12,14 +12,7 @@ import ScreenWrapper from '../../components-simple/ScreenWrapper';
 import DateDisplay from '../../components-simple/DateDisplay';
 import CustomLink from '../../components-simple/CustomLink';
 
-type DeleteResponse = { message: string }; // Adjust this to match your actual response shape
-
-// UseMutationResult Type
-// export type DeleteJournalMutation = UseMutationResult<
-//   DeleteResponse, // TData (API response type)
-//   AxiosError, // TError (error type)
-//   string // TVariables (argument passed to mutationFn, in this case, the id)
-// >;
+type DeleteResponse = { message: string };
 
 export type DeleteJournalMutation = UseMutationResult<
   DeleteResponse, // TData (API response type)
@@ -52,6 +45,15 @@ const TextWrapper = styled.div`
   border: 1px solid ${baseTokens.colors.gray100};
   border-radius: ${baseTokens.radius.md};
   text-align: left;
+  max-width: 80%;
+
+  @media (min-width: 600px) {
+    min-width: 500px;
+  }
+
+  @media (min-width: 1100px) {
+    min-width: 900px;
+  }
 `;
 
 const TitleWrapper = styled.div`

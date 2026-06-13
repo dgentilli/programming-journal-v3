@@ -7,6 +7,7 @@ import ScreenWrapper from '../../components-simple/ScreenWrapper';
 import Pagination from '../../components-simple/Pagination';
 import EmptyScreen from '../../components-simple/EmptyScreen';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 interface PostsUIProps {
   journals: Journal[] | undefined;
@@ -51,7 +52,7 @@ const PostsUI = (props: PostsUIProps) => {
   }
 
   if (isError) {
-    if (error?.status === '401') {
+    if (axios.isAxiosError(error) && error?.status === 401) {
       return navigate('/auth');
     }
     return <div>Error: {error?.message}</div>; // Display error message
