@@ -40,7 +40,7 @@ interface JournalDetailProps {
   goBack: () => void;
 }
 
-const TextWrapper = styled.div`
+const BodyTextWrapper = styled.div`
   padding: ${baseTokens.spacing.xl};
   border: 1px solid ${baseTokens.colors.gray100};
   border-radius: ${baseTokens.radius.md};
@@ -61,7 +61,11 @@ const TitleWrapper = styled.div`
 `;
 
 const TitleText = styled.h3`
-  color: ${baseTokens.colors.blue500};
+  color: ${baseTokens.colors.gray400};
+`;
+
+const MetaDataTextWrapper = styled.div`
+  text-align: left;
 `;
 
 const ButtonWrapper = styled.div`
@@ -81,7 +85,7 @@ const Row = styled.div`
 `;
 
 const CategoryText = styled.p`
-  color: ${baseTokens.colors.blue700};
+  color: ${baseTokens.colors.gray400};
 `;
 
 const PostDetailUI = (props: JournalDetailProps) => {
@@ -135,23 +139,25 @@ const PostDetailUI = (props: JournalDetailProps) => {
         <CategoryText>Category: {category}</CategoryText>
       </Row>
       <Row>
+        <MetaDataTextWrapper>Tags:</MetaDataTextWrapper>
         <TagWrapper tags={tags} />
       </Row>
       <Spacer height={baseTokens.spacing.md} />
       <Row>
+        <MetaDataTextWrapper>Created:</MetaDataTextWrapper>
         <DateDisplay dateString={date} format='EEEE, MMMM do, yyyy' />
       </Row>
       <Spacer height={baseTokens.spacing.md} />
       <TitleWrapper>
         <TitleText>{title}</TitleText>
       </TitleWrapper>
-      <TextWrapper>
+      <BodyTextWrapper>
         <ReactMarkdown
           children={content}
           components={renderMap}
           allowedElements={allowedMarkdownElements}
         />
-      </TextWrapper>
+      </BodyTextWrapper>
       <ButtonWrapper>
         <Button
           color={ButtonColor.INFO}
