@@ -1,8 +1,10 @@
 import { styled } from 'styled-components';
+import ReactMarkdown from 'react-markdown';
 import { baseTokens } from '../theme/baseTokens';
 import Button from './Button';
 import { ButtonColor } from '../../constants/enums';
 import DateDisplay from './DateDisplay';
+import Spacer from './Spacer';
 
 const Wrapper = styled.li`
   padding: ${baseTokens.spacing.md};
@@ -18,7 +20,7 @@ const Title = styled.h3`
   text-align: center;
 `;
 
-const Text = styled.p`
+const TextWrapper = styled.div`
   color: ${baseTokens.colors.gray300};
   line-height: 1.7;
   text-align: left;
@@ -46,7 +48,10 @@ const ListItem = (props: ListItemProps) => {
     <Wrapper>
       <Title>{title}</Title>
       <DateDisplay dateString={createdAt} format='EEEE, MMMM do, yyyy' />
-      <Text>{content}</Text>
+      <TextWrapper>
+        <ReactMarkdown children={content} />
+      </TextWrapper>
+      <Spacer />
       <Button color={ButtonColor.INFO} text='Read More' onClick={onClick} />
     </Wrapper>
   );
