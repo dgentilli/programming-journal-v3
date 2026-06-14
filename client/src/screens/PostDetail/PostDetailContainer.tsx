@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
@@ -7,6 +7,8 @@ import axios from 'axios';
 import PostDetailUI, { DeleteJournalMutation } from './PostDetailUI';
 import { Journal } from '../../types/common';
 import { useUser } from '../../globalState/userStore';
+import useMarkdownRenderMap from '../../hooks/useMarkdownRenderMap';
+import { allowedMarkdownElements } from '../../types/common';
 
 const MemoizedPostDetailUI = React.memo(PostDetailUI);
 
@@ -33,23 +35,6 @@ const deleteJournalEntry = async (id: string, token: string) => {
   return response.data;
 };
 
-const allowedMarkdownElements = [
-  'p', // Paragraphs
-  'br', // Line breaks
-  'strong', // Bold text
-  'em', // Italics
-  'code', // Inline code
-  'pre', // Code blocks
-  'a', // Links
-  'h1',
-  'h2',
-  'h3', // Headers
-  'ul',
-  'ol',
-  'li', // Bullet and numbered lists
-  'blockquote', // Code block quotes
-];
-
 const PostDetailContainer = () => {
   const user = useUser();
   const token = user?.token || '';
@@ -59,65 +44,7 @@ const PostDetailContainer = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const renderMap = useMemo(() => {
-    return {
-      a: ({ href, children }: { href?: string; children?: ReactNode }) => (
-        <a
-          href={href}
-          target='_blank'
-          rel='noopener noreferrer'
-          style={{ color: '#0066cc' }}
-        >
-          {children}
-        </a>
-      ),
-      blockquote: ({ children }: { children?: ReactNode }) => (
-        <blockquote
-          style={{
-            borderLeft: '4px solid #ccc',
-            paddingLeft: '16px',
-            fontStyle: 'italic',
-          }}
-        >
-          {children}
-        </blockquote>
-      ),
-      ul: ({ children }: { children?: ReactNode }) => (
-        <ul
-          style={{
-            listStyleType: 'disc', // Forces the classic bullet dot to show up
-            paddingLeft: '24px', // Indents the list so it doesn't flush left
-            margin: '12px 0', // Adds space above and below the list
-            textAlign: 'left',
-          }}
-        >
-          {children}
-        </ul>
-      ),
-      li: ({ children }: { children?: ReactNode }) => (
-        <li
-          style={{
-            listStyle: 'initial',
-            marginBottom: '6px', // Adds breathing room between list items
-            textAlign: 'left',
-          }}
-        >
-          {children}
-        </li>
-      ),
-      code: ({ children }: { children?: ReactNode }) => (
-        <div
-          style={{
-            backgroundColor: '#eee',
-            padding: '12px',
-            borderRadius: '8px',
-          }}
-        >
-          {children}
-        </div>
-      ),
-    };
-  }, []);
+  const renderMap = useMarkdownRenderMap();
 
   const goToEditPage = useCallback(() => {
     navigate(`/edit/${id}`);

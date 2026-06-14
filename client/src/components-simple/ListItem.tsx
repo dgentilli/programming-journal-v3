@@ -5,6 +5,8 @@ import Button from './Button';
 import { ButtonColor } from '../../constants/enums';
 import DateDisplay from './DateDisplay';
 import Spacer from './Spacer';
+import useMarkdownRenderMap from '../hooks/useMarkdownRenderMap';
+import { allowedMarkdownElements } from '../types/common';
 
 const Wrapper = styled.li`
   padding: ${baseTokens.spacing.md};
@@ -25,6 +27,7 @@ const TextWrapper = styled.div`
   line-height: 1.7;
   text-align: left;
   display: -webkit-box;
+  list-style: initial;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 5;
   overflow: hidden;
@@ -43,13 +46,18 @@ export interface ListItemProps {
 const ListItem = (props: ListItemProps) => {
   const { postData, onClick } = props;
   const { title, content, createdAt } = postData;
+  const renderMap = useMarkdownRenderMap();
 
   return (
     <Wrapper>
       <Title>{title}</Title>
       <DateDisplay dateString={createdAt} format='EEEE, MMMM do, yyyy' />
       <TextWrapper>
-        <ReactMarkdown children={content} />
+        <ReactMarkdown
+          children={content}
+          components={renderMap}
+          allowedElements={allowedMarkdownElements}
+        />
       </TextWrapper>
       <Spacer />
       <Button color={ButtonColor.INFO} text='Read More' onClick={onClick} />

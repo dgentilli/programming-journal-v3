@@ -30,3 +30,20 @@ export interface EntryFormProps {
   }) => void;
   onSuccess: () => void;
 }
+
+export const allowedMarkdownElements = [
+  'p', // Paragraphs
+  'br', // Line breaks
+  'strong', // Bold text
+  'em', // Italics
+  'code', // Inline code
+  'pre', // Code blocks
+  'a', // Links
+  'h1',
+  'h2',
+  'h3', // Headers
+  'ul',
+  'ol',
+  'li', // Bullet and numbered lists
+  'blockquote', // Code block quotes
+];
